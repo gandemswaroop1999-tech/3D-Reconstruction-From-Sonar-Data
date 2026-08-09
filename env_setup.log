@@ -1,0 +1,74 @@
+=== conda create === 
+Retrieving notices: - \ | / - \ | / - \ | / - done
+Channels:
+ - defaults
+Platform: win-64
+Collecting package metadata (repodata.json): ...working... done
+Solving environment: ...working... done
+
+## Package Plan ##
+
+  environment location: R:\sonar\envs\suop-recon
+
+  added / updated specs:
+    - python=3.10
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    ca-certificates-2026.7.16  |       haa95532_0         106 KB
+    packaging-26.1             |  py310haa95532_0         240 KB
+    ------------------------------------------------------------
+                                           Total:         345 KB
+
+The following NEW packages will be INSTALLED:
+
+  bzip2              pkgs/main/win-64::bzip2-1.0.8-h2bbff1b_6 
+  ca-certificates    pkgs/main/win-64::ca-certificates-2026.7.16-haa95532_0 
+  libexpat           pkgs/main/win-64::libexpat-2.8.2-hd7fb8db_1 
+  libffi             pkgs/main/win-64::libffi-3.4.8-h42d73b9_3 
+  libzlib            pkgs/main/win-64::libzlib-1.3.2-h1c6eee0_0 
+  openssl            pkgs/main/win-64::openssl-3.5.7-hbb43b14_0 
+  packaging          pkgs/main/win-64::packaging-26.1-py310haa95532_0 
+  pip                pkgs/main/noarch::pip-26.1.2-pyhc872135_0 
+  python             pkgs/main/win-64::python-3.10.20-hb00fc5c_1 
+  setuptools         pkgs/main/win-64::setuptools-83.0.0-py310haa95532_0 
+  sqlite             pkgs/main/win-64::sqlite-3.53.2-hee5a0db_0 
+  tk                 pkgs/main/win-64::tk-8.6.15-hf199647_0 
+  tzdata             pkgs/main/noarch::tzdata-2026c-he532380_0 
+  ucrt               pkgs/main/win-64::ucrt-10.0.22621.0-haa95532_0 
+  vc                 pkgs/main/win-64::vc-14.3-h2df5915_12 
+  vc14_runtime       pkgs/main/win-64::vc14_runtime-14.44.35208-h4927774_12 
+  vs2015_runtime     pkgs/main/win-64::vs2015_runtime-14.44.35208-ha6b5a95_12 
+  wheel              pkgs/main/win-64::wheel-0.47.0-py310haa95532_0 
+  xz                 pkgs/main/win-64::xz-5.8.2-h53af0af_0 
+  zlib               pkgs/main/win-64::zlib-1.3.2-h1c6eee0_0 
+
+
+
+Downloading and Extracting Packages: ...working...packaging-26.1       | 240 KB    |            |   0% 
+ca-certificates-2026 | 106 KB    |            |   0% [A
+ca-certificates-2026 | 106 KB    | #5         |  15% [Apackaging-26.1       | 240 KB    | 6          |   7% 
+ca-certificates-2026 | 106 KB    | ######     |  60% [Apackaging-26.1       | 240 KB    | ##6        |  27% 
+ca-certificates-2026 | 106 KB    | #######5   |  76% [Apackaging-26.1       | 240 KB    | ###3       |  33% 
+ca-certificates-2026 | 106 KB    | ########## | 100% [A
+ca-certificates-2026 | 106 KB    | ########## | 100% [Apackaging-26.1       | 240 KB    | ####6      |  47% packaging-26.1       | 240 KB    | ######     |  60% packaging-26.1       | 240 KB    | ########   |  80% packaging-26.1       | 240 KB    | #########3 |  94% packaging-26.1       | 240 KB    | ########## | 100% packaging-26.1       | 240 KB    | ########## | 100%                                                      
+                                                     [A done
+Preparing transaction: | / done
+Verifying transaction: \ | / - \ | / - \ | / - \ | / - \ | / - done
+Executing transaction: | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | / - \ | done
+ERROR conda.core.link:_execute(938): An error occurred while installing package 'defaults::python-3.10.20-hb00fc5c_1'.
+Rolling back transaction: - \ | / - \ | / - done
+
+CondaSignalInterrupt: Signal interrupt SIGINT
+()
+CondaSignalInterrupt: Signal interrupt SIGINT
+CondaSignalInterrupt: Signal interrupt SIGINT
+CondaSignalInterrupt: Signal interrupt SIGINT
+
+=== pip install === 
+
+CondaError: KeyboardInterrupt
+
