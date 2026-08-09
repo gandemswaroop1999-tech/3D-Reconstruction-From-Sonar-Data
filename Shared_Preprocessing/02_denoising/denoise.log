@@ -1,0 +1,14 @@
+[10/120] elapsed=3.9s
+[20/120] elapsed=6.6s
+[30/120] elapsed=10.3s
+[40/120] elapsed=14.4s
+[50/120] elapsed=16.6s
+[60/120] elapsed=18.2s
+[70/120] elapsed=20.1s
+[80/120] elapsed=24.7s
+[90/120] elapsed=27.2s
+[100/120] elapsed=28.6s
+[110/120] elapsed=31.9s
+[120/120] elapsed=33.6s
+DONE total=120 ok=120 err=0 elapsed=33.6s
+BAT_EXIT=0 
