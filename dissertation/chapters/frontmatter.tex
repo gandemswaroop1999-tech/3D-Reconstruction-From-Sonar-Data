@@ -1,0 +1,93 @@
+% =====================================================================
+% Front matter (Heriot-Watt University format):
+% Title page -> Abstract (<=200 words, single page) -> Dedication
+% -> Acknowledgements -> Declaration (official form bound in)
+% =====================================================================
+
+% ------------------------- title page --------------------------------
+\begin{titlepage}
+\begin{center}
+\vspace*{15pt}\par
+\setstretch{1}
+{\Large\bfseries\MakeUppercase{Sonar-Based 3D Reconstruction of Small
+Underwater Objects: Two Routes for the \suop{} Dataset}}\\
+\vspace{40pt}\par
+\includegraphics[width=140pt]{hwulogo.png}\\
+\vspace{40pt}\par
+{\itshape\fontsize{15.5pt}{19pt}\selectfont by\\}\vspace{15pt}\par
+{\Large\authorName}\vspace{55pt}\par
+{\large Submitted for the degree of \\ \vspace{8pt} \Large\slshape\degreeQualification\\}
+\vspace{35pt}\par
+{\scshape\setstretch{1.5}\school\\ \university\\}
+\vspace{50pt}\par
+{\large\monthDate\ \yearDate}
+\vfill
+\begin{flushleft}
+\setstretch{1.4}\small
+The copyright in this thesis is owned by the author. Any quotation from the
+thesis or use of any of the information contained in it must acknowledge this
+thesis as the source of the quotation or information.
+\end{flushleft}
+\end{center}
+\end{titlepage}
+
+% ------------------------- abstract ----------------------------------
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+Acoustic sonar point clouds of small underwater objects are partial, noisy and
+unevenly sampled, and the \suop{} (Small Underwater Objects 3D Point Cloud)
+dataset adds the further difficulty that the pose of the object was not logged
+during acquisition. This dissertation investigates how such incomplete returns
+can be converted into useful 3D representations, and makes explicit when each
+of two complementary routes should be chosen.
+
+\routeA{}, multi-view geometric fusion, estimates the relative poses of
+segmented scans with FPFH/RANSAC/ICP, optimises them jointly in a pose graph
+with loop closures, fuses the aligned measurements, and surfaces them with
+Screened Poisson and ball-pivoting meshing. For all five object categories the
+graph connects 24/24 views, and variant pipelines report median
+observed-to-surface residuals of $2.9$--$5.0\mm$.
+
+\routeB{}, single-view learned completion, trains a Point Completion Network
+with a symmetric Chamfer loss on sonar-realistic partials derived from
+procedural models and from \routeA{}'s own meshes. Training converges (final
+training Chamfer $1.1\times10^{-3}$--$2.3\times10^{-3}$), and a real chair
+partial is completed at the correct scale.
+
+The routes differ in output meaning --- measurement fusion versus
+prior-informed inference --- and therefore in evaluation protocol. A
+calibrated acquisition with logged poses and an external reference mesh is
+proposed as the decisive future experiment.
+
+% ------------------------- dedication --------------------------------
+\chapter*{Dedication}
+\addcontentsline{toc}{chapter}{Dedication}
+To my family, for their patience and support throughout this project.
+
+% ------------------------- acknowledgements -------------------------
+\chapter*{Acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+I would like to thank my supervisor for guidance and feedback throughout this
+project, and the IOES-Lab for releasing the \suop{} dataset and its detection
+benchmark publicly. I am also grateful to my family and friends for their
+patience and support during the writing of this dissertation.
+
+% ------------------------- declaration -------------------------------
+\chapter*{Declaration}
+\addcontentsline{toc}{chapter}{Declaration}
+
+I hereby declare that the work presented in this dissertation is my own and
+that, to the best of my knowledge and belief, it contains no material
+previously published or written by another person, except where due
+acknowledgement is made in the text. I further declare that this dissertation
+has not been submitted, in whole or in part, for any other degree or
+professional qualification at this or any other institution.
+
+\vspace{1.5cm}
+Signature: \rule{6cm}{0.4pt} \hfill Date: \rule{4cm}{0.4pt}
+
+\vspace{2cm}
+{\small\itshape Note: the official Heriot-Watt University Declaration of
+Academic Integrity form must be signed and bound into every submitted copy of
+the thesis (see the \texttt{Heriot\_Watt\_Thesis\_Template} guidance).}

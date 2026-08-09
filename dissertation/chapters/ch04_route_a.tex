@@ -1,0 +1,239 @@
+% =====================================================================
+% Chapter 4 — Route A: Multi-View Geometric Fusion
+% =====================================================================
+\chapter{Route~A: Multi-View Geometric Fusion}
+\label{ch:routeA}
+
+This chapter presents the methodology of \routeA, the purely geometric route.
+It first justifies \emph{why} Route~A is the appropriate answer in this
+project (Section~\ref{sec:why_routeA}), then details the pipeline in its four
+stages: pairwise registration (Section~\ref{sec:routea_pairwise}), pose-graph
+optimisation (Section~\ref{sec:routea_graph}), fusion (Section~\ref{sec:routea_fusion})
+and meshing (Section~\ref{sec:routea_meshing}). Two variants are then described
+(Section~\ref{sec:routea_variants}): the view-aware seabed-plane variant and the
+sonar-native first-return ray TSDF variant.
+
+\section{Why Route~A?}
+\label{sec:why_routeA}
+
+Route~A is the answer to the research question under the following conditions:
+
+\begin{enumerate}
+  \item \textbf{Several scans of the same rigid object are available.} The
+  \suop{} 3~m acquisition provides 24 curated cases per object, each a
+  different placement/orientation of the same physical object. If these scans
+  can be aligned into a common frame, each object is observed from many
+  effective viewpoints, and the unobserved regions of any single scan are
+  covered by the others.
+  \item \textbf{The output must be a faithful record of the measurements.}
+  Route~A never invents geometry: every point of the output descends from a
+  registered sonar return. For safety- and inspection-critical applications
+  (e.g.\ estimating whether a propeller is fouled, or whether a net is torn)
+  it is preferable to under-cover than to hallucinate, so a measurement-fusion
+  route is the defensible choice.
+  \item \textbf{No external CAD or learned prior is available or trusted.}
+  The \suop{} release contains no CAD models, and the object categories (tyre,
+  drum, dummy, net, folding chair) are physically variable, so fitting a rigid
+  template would impose assumptions. Route~A requires no prior beyond the
+  published object scale used for segmentation.
+\end{enumerate}
+
+The \emph{core assumption} of Route~A is that the segmented scans are noisy
+partial views of one rigid object, so there exists a set of rigid transforms
+that brings them into agreement. The pipeline is therefore a structure-from-scan
+problem with unknown poses: registration first, fusion second, meshing third.
+Route~A's pipeline is summarised in \figref{fig:routeA_overview}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{fig_routeA_comparison.png}
+  \caption{Route~A output for the chair and dummy: fused measured cloud,
+  Screened Poisson surface and BPA surface rendered together. The two meshers
+  expose the trade-off between global smooth completion (Poisson) and local
+  evidence-driven triangulation (BPA).}
+  \label{fig:routeA_overview}
+\end{figure}
+
+\section{Stage 1: pairwise registration}
+\label{sec:routea_pairwise}
+
+\subsection{Preprocessing}
+Each segmented cloud is translated so its centroid is at the origin, voxel
+downsampled at 15~mm (\texttt{VOXEL\_SIZE}), and given normals estimated with a
+hybrid search radius of 45~mm (3~$\times$ voxel). Downsampling serves two
+purposes: it reduces the cost of the $\binom{n}{2}$ pairwise evaluations, and
+it equalises density between views so that fitness values are comparable.
+Normals are required by both the FPFH descriptor and the point-to-plane ICP
+refinement.
+
+\subsection{FPFH descriptors}
+For each downsampled point, FPFH \citep{rusu2009fast} is computed with a
+feature radius of 75~mm (5~$\times$ voxel) and up to 100 neighbours. The
+descriptor is a 33-dimensional histogram of relative angle features between
+the query point and its neighbours. FPFH is chosen because it is fast, robust
+to noise, and adequate for the mostly-smooth objects in \suop{}. Its known
+weakness --- confusion between \emph{repeated parts} such as chair legs or
+tyre treads --- is exactly why pairwise matches are treated as evidence in a
+globally optimised graph rather than accepted as truth.
+
+\subsection{RANSAC global alignment}
+For every pair $(i,j)$, an initial alignment is sought with RANSAC feature
+matching \citep{fischler1981ransac}: candidate correspondences are sampled from
+the FPFH matches, the implied rigid transform is computed, and geometrically
+consistent inliers are counted under a correspondence distance of 30~mm
+(2~$\times$ voxel). The transform with the most inliers (subject to an
+edge-length consistency check and a distance check) is returned. RANSAC is
+needed because the \suop{} cases share no common frame and ICP alone cannot
+converge from an arbitrary initialisation.
+
+\subsection{Point-to-plane ICP refinement}
+The RANSAC transform initialises ICP \citep{besl1992method}, which minimises
+the point-to-plane distance between corresponding points,
+\begin{equation}
+\label{eq:icp}
+\min_{T} \sum_{(p,q)\in \mathcal{C}(T)}
+\big( (T p - q)\cdot n_q \big)^2,
+\end{equation}
+where $\mathcal{C}(T)$ is the nearest-neighbour correspondence set under $T$ and
+$n_q$ is the normal at the target point. The result is scored by its
+\emph{fitness} (fraction of inliers) and \emph{inlier RMSE}. The information
+matrix for the edge is computed from the inlier correspondences; it is needed
+by the pose-graph optimiser to weight the constraint.
+
+\subsection{Edge acceptance}
+Only pairwise registrations whose fitness is at least
+\texttt{MIN\_FITNESS\_FOR\_EDGE} $= 0.25$ become pose-graph edges. This
+threshold is deliberately conservative: a low-fitness registration typically
+aligns only a small (often symmetric) subset of the geometry and would inject
+false constraints into the graph. The threshold also encodes the observation
+that \suop{} scans at 6 and 10~m ranges simply cannot reach fitness 0.25 (their
+fitness is typically $<0.1$ after ICP), which is why only 3~m cases are fused.
+
+\section{Stage 2: pose-graph optimisation}
+\label{sec:routea_graph}
+
+\subsection{Maximum-fitness spanning tree}
+With $n$ views, the pairwise stage yields up to $\binom{n}{2}$ candidate
+edges. A \emph{maximum-fitness spanning tree} is built with Prim's algorithm
+\citep{cormen2009introduction} over the accepted edges: starting from a
+reference view (index 0), the highest-fitness edge connecting the visited set
+to an unvisited view is added until all reachable views are connected. The MST
+provides two things: (i)~an \emph{initial pose} for every view (composed along
+the tree from the reference), and (ii)~a set of \emph{odometry edges} that are
+declared certain in the graph.
+
+\subsection{Loop closures}
+Every \emph{other} accepted pairwise edge is a \emph{loop-closure} edge,
+declared \emph{uncertain} in the graph. Loop closures are what make multiway
+fusion better than a naive pairwise chain: they constrain the accumulated
+drift by tying non-neighbouring views together. For 24 views, the MST uses 23
+edges and the number of loop closures is typically in the tens to hundreds
+(\secref{ch:resultsA}).
+
+\subsection{Global optimisation}
+The pose graph is optimised with Open3D's global optimisation
+\citep{choi2015robust,zhou2018open3d}: a Levenberg--Marquardt solver minimises
+the weighted squared residuals over all edges,
+\begin{equation}
+\label{eq:posegraph}
+\min_{\{T_i\}} \sum_{(i,j)\in E}
+\left\lVert \log\!\left( T_{ij}^{-1} T_i^{-1} T_j \right) \right\rVert^2_{\Sigma_{ij}},
+\end{equation}
+where the norm is the weighted geodesic error on $SE(3)$ and $\Sigma_{ij}$ is
+the edge information matrix. An edge-pruning threshold of 0.25 removes
+outlier constraints during optimisation. The optimised node poses are the
+final per-view object poses in the canonical frame.
+
+\section{Stage 3: fusion}
+\label{sec:routea_fusion}
+
+Each original (non-downsampled) segment is transformed by its optimised pose
+and accumulated into a single point cloud. The fused cloud is voxel
+downsampled at half the pairwise voxel (7.5~mm) to produce the final
+\emph{measured} representation of the object. The fused cloud is both an
+output in its own right and the input to meshing.
+
+\section{Stage 4: surface reconstruction}
+\label{sec:routea_meshing}
+
+Two independent meshers are run on the fused, normal-oriented cloud, exposing
+complementary behaviours:
+
+\subsection{Screened Poisson reconstruction}
+The cloud's normals are oriented consistently
+(\emph{orient\_normals\_consistent\_tangent\_plane}), and Screened Poisson
+reconstruction \citep{kazhdan2006poisson,kazhdan2013screened} is solved at
+octree depth 8. The output is trimmed by removing the 2\% lowest-density
+vertices (a standard guard against extrapolation into unsupported space) and
+cleaned: degenerate/duplicate triangles, duplicate vertices and non-manifold
+edges are removed, and only the largest connected component is kept.
+Poisson's strength is a smooth, closed surface that bridges small sampling
+gaps; its limitation is that it \emph{will} close large unsupported gaps too,
+inflating sparse regions.
+
+\subsection{Ball-Pivoting Algorithm}
+BPA \citep{bernardini1999ball} rolls a ball over the cloud with four radii
+($1.5, 2, 3, 4$ $\times$ the mean nearest-neighbour distance), creating a
+triangle whenever the ball touches three points without enclosing another.
+The same cleaning procedure is applied. BPA's strength is that it preserves
+genuine gaps (holes remain where sampling is too sparse); its limitation is
+that it cannot bridge gaps at all.
+
+\subsection{Why produce both?}
+Producing both meshes is not redundancy: it is the honest way to present the
+uncertainty of the fusion. Where Poisson and BPA agree, the surface is well
+supported by measurements; where they disagree (Poisson fills, BPA is open),
+the surface is extrapolated and should be treated as less certain. This
+two-mesh discipline is carried into the results and discussion
+(\secref{ch:resultsA}, \secref{ch:discussion}).
+
+\section{Variants}
+\label{sec:routea_variants}
+
+Two further Route~A variants address the specific weakness of the generic
+pipeline on sparse \suop{} evidence: the generic pipeline registers in full
+$SE(3)$, which is fragile when segments contain only a few hundred points.
+
+\subsection{View-aware seabed-plane registration}
+The view-aware variant (\texttt{reconstruct\_viewaware.py}) exploits the
+physical constraint that the object moves \emph{on the seabed plane}. For each
+case it: range-gates the 3~m cloud to the shell band $1.75$--$4.0$~m; removes
+the seabed plane (RANSAC, 16~mm threshold); keeps only elevated returns
+($3.5$--$48$~cm for the chair, $1.5$--$42$~cm for the tyre) that cannot belong
+to the seabed; and clusters at the published object scale (chair diagonal
+$0.18$--$0.62$~m; tyre $0.38$--$0.92$~m). Acceptable clusters are registered
+with an \emph{SE(2)} transform in the seabed plane --- yaw plus planar
+translation --- which also moves the sonar origin into the canonical object
+frame, and view-oriented surfels are fused with screened Poisson. The
+\emph{acceptance} criterion is explicit: a case is accepted only if its planar
+fit has an inlier fraction above threshold and a trimmed RMSE below threshold
+(e.g.\ $\le 26$~mm). \tabref{tab:routeA_metrics} in \secref{ch:resultsA} reports
+the accepted case counts and the surface-fit metrics.
+
+\subsection{Sonar-native first-return ray TSDF}
+\label{sec:routea_tsdf}
+The sonar-native variant (\texttt{reconstruct\_suop\_tsdf.py}) deliberately
+contains no CAD, primitive or learned prior. It treats every registered return
+as the first hit on an acoustic ray anchored at the sonar origin: space
+\emph{before} the return is free, and a short band \emph{behind} it is
+occupied. These signed-distance observations are fused in a dense TSDF
+\citep{curless1996volumetric} (4~mm voxels, 18~mm truncation) and the
+zero-crossing is extracted with marching cubes \citep{lorensen1987marching}.
+Crucially, the mesh is coloured by \emph{measured-return support} and any
+vertex without nearby measured support (beyond a 16~mm support limit) is
+removed, so unobserved regions cannot masquerade as accurate geometry. This
+variant is the most conservative and the most honest about what a single
+acoustic return can prove; its results appear in \secref{sec:resultsA_variants}.
+
+\section{Summary}
+\label{sec:routea_summary}
+
+\routeA{} is chosen when several scans of a rigid object exist and the output
+must be a faithful fusion of measurements. It estimates poses from geometry
+(FPFH/RANSAC/ICP), refines them jointly in a pose graph with loop closures,
+fuses the aligned measurements and surfaces the result with two complementary
+meshers. Two variants harden the pipeline for sparse sonar evidence: a
+seabed-plane-constrained SE(2) registration, and a sonar-native first-return
+ray TSDF that reports measurement support explicitly. The next chapter
+presents the alternative route, which drops the multi-view requirement
+entirely and replaces geometry with a learned prior.

@@ -1,0 +1,179 @@
+% =====================================================================
+% Chapter 6 — Why Route A, Why Route B: The Two Routes Compared
+% =====================================================================
+\chapter{Why \routeA, Why \routeB: The Two Routes Compared}
+\label{ch:comparison}
+
+This chapter is the conceptual core of the dissertation. \secref{ch:routeA}
+and \secref{ch:routeB} each justified their own route; this chapter
+\emph{contrasts} them directly so that the choice is explicit and the
+difference in output meaning is unmistakable. It first positions the two
+routes as different answers to the same question under different data
+availability (\secref{sec:cmp_positioning}), then compares them side by side
+on motivation, assumptions, input requirements, ground truth and evaluation
+(\secref{sec:cmp_table}), and finally discusses the \emph{output differences}
+in depth (\secref{sec:cmp_outputs}).
+
+\section{Positioning: two routes, one question}
+\label{sec:cmp_positioning}
+
+The research question of \secref{sec:research_question} --- how to turn
+incomplete sonar returns into a useful 3D representation --- admits two
+fundamentally different answers, and which one is \emph{correct} depends on
+data availability and on what the output will be used for. The two routes are
+\emph{complementary, not interchangeable}:
+
+\begin{quote}
+\routeA{} is the right answer \emph{when several scans of a rigid object
+exist} and the output must be a \emph{fusion of measurements}: it estimates
+poses, aligns the scans, and surfaces the measured evidence. \routeB{} is the
+right answer \emph{when only one view exists} and a \emph{complete} object
+representation is needed: it encodes the partial and decodes the missing
+geometry from a learned prior.
+\end{quote}
+
+This is why the project implements both: neither route dominates the other,
+because they answer different sub-problems of the same question. The decision
+procedure is:
+
+\begin{enumerate}
+  \item \textbf{How many views of the object are available?} If several
+  overlapping views exist and can be aligned, \routeA{} is available and its
+  output is strictly more trustworthy (measured). If only one view exists,
+  only \routeB{} can produce a complete output.
+  \item \textbf{What is the output for?} If the application can tolerate (or
+  requires) unmeasured regions, \routeB{}'s completeness is a feature. If the
+  application must not be misled by hallucinated geometry (inspection, safety
+  assessment), \routeA{}'s honesty is decisive.
+  \item \textbf{Is a shape prior available and trusted?} \routeB{} depends on
+  the training distribution: it will produce plausible-but-wrong geometry for
+  shapes outside that distribution. \routeA{} needs no prior beyond object
+  scale.
+\end{enumerate}
+
+\section{Side-by-side comparison}
+\label{sec:cmp_table}
+
+\tabref{tab:route_comparison} compares the two routes across every dimension
+that a reader or examiner might question: motivation, assumption, input,
+output, ground truth, failure modes and evaluation.
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{adjustbox}{max width=\textwidth}
+  \begin{tabular}{@{}p{2.9cm}p{5.6cm}p{5.6cm}@{}}
+    \toprule
+    Dimension & \routeA{} (geometric fusion) & \routeB{} (learned completion) \\
+    \midrule
+    \textbf{Chosen when} & several scans of the same rigid object exist &
+    only one partial view exists (or will exist at deployment) \\
+    \textbf{Core assumption} & scans are noisy partials of one rigid object;
+    there exist rigid transforms aligning them & training pairs teach a prior
+    over complete object geometry; a complete reference exists for training \\
+    \textbf{Input} & $N$ segmented 3~m scans (24 curated per object) &
+    one segmented partial cloud (2048 points) \\
+    \textbf{Internal operations} & FPFH $\to$ RANSAC $\to$ ICP $\to$ pose graph
+    (MST + loop closures) $\to$ fusion $\to$ Poisson/BPA (or ray TSDF) &
+    PointNet-style encoder $\to$ global latent $\to$ coarse head $\to$ folding
+    decoder \\
+    \textbf{Output} & fused measured cloud + two meshes; vertices with no
+    measurement support are removed & coarse + fine completed point clouds;
+    unobserved regions are inferred \\
+    \textbf{Output meaning} & \emph{what was measured}, aligned and fused &
+    \emph{what was inferred}, guided by a learned prior \\
+    \textbf{Ground truth} & none external: the scans themselves are the
+    evidence (no CAD mesh, no logged pose in \suop{}) & complete reference
+    cloud paired with each partial (procedural or Route~A-mesh-derived) \\
+    \textbf{Typical failure} & registration error propagates through the
+    graph; symmetric parts confuse FPFH; sparse regions over- or under-filled
+    by the mesher & hallucination: plausible-but-wrong geometry outside the
+    training distribution; scale errors \\
+    \textbf{Evaluation metric} & registration fitness/RMSE, graph
+    connectivity, fused-point counts, mesh statistics, measured-to-surface
+    residual & Chamfer distance (accuracy + completeness), visual
+    partial/reference/completion comparison \\
+    \textbf{Do not compare with} & \chd{} loss of \routeB{} & mesh counts of
+    \routeA{} \\
+    \bottomrule
+  \end{tabular}
+  \end{adjustbox}
+  \caption{Direct comparison of the two routes. The critical column is
+  ``Output meaning'': \routeA{} fuses measurements, \routeB{} infers missing
+  geometry. Consequently their evaluation metrics measure different questions
+  and must not be exchanged.}
+  \label{tab:route_comparison}
+\end{table}
+
+\section{Output differences in depth}
+\label{sec:cmp_outputs}
+
+\subsection{What each output claims}
+The most important intellectual point of this dissertation is that the two
+outputs make \emph{different epistemological claims}:
+
+\begin{itemize}
+  \item \routeA{} claims: \emph{``every output point is a registered sonar
+  return (or a surface interpolated between such returns); where no
+  measurements exist, the surface is either left open (BPA) or explicitly
+  trimmed (Poisson, ray TSDF).''} The output is an \emph{evidence report}.
+  \item \routeB{} claims: \emph{``this is a complete object as predicted by a
+  prior learned from the training distribution; some of these points were
+  never measured and are inferred.''} The output is a \emph{model hypothesis}.
+\end{itemize}
+
+This distinction has three practical consequences.
+
+\paragraph{1. Completeness versus fidelity.}
+\routeA{} is typically less complete: parts of the object that no scan saw
+remain empty, and the two meshers disagree there (Poisson closes, BPA stays
+open). \routeB{} is always complete by construction: the decoder emits the
+same fixed number of points regardless of how much of the object was visible.
+Completeness is only meaningful relative to the ground truth, which \routeA{}
+does not have in \suop{} and \routeB{} does.
+
+\paragraph{2. Ground-truth availability.}
+Because \routeA{}'s input is the only evidence, its accuracy cannot be checked
+against an external truth in \suop{} --- there is no CAD model and no logged
+pose. The honest metrics are therefore internal consistency (fitness, RMSE,
+connectivity, fused counts) and measured-to-surface residuals, plus a
+claim-free visual comparison. \routeB{} has an explicit paired reference, so
+its accuracy \emph{can} be measured --- but only within the training
+distribution, and a low Chamfer loss does not imply that the inference is
+physically correct (the network may have learned the prior rather than the
+specific object).
+
+\paragraph{3. What ``better'' means.}
+Because the two outputs answer different questions, a single ``which route is
+better?'' is ill-posed. \routeB{}'s Chamfer loss is not comparable with
+\routeA{}'s mesh statistics: a large \routeA{} mesh is not better than a small
+one, and a small \routeB{} loss on synthetic partials is not evidence that the
+geometric route failed. The only meaningful comparison would require a common
+reference --- a calibrated acquisition with logged poses and an external scan
+of the same objects --- which is exactly the future-work experiment of
+\secref{ch:conclusions}.
+
+\section{When the routes connect}
+\label{sec:cmp_connection}
+
+Despite their differences, the routes are not isolated. \routeB{}'s
+Generator~2 (\secref{sec:routeB_generators}) samples training references from
+\routeA{} meshes, so the learned prior is conditioned on what the geometric
+route actually recovered from sonar. This creates a virtuous loop: where
+\routeA{} has strong evidence, the prior is grounded in measured geometry; and
+where \routeB{} then infers a complete shape, it does so from a distribution
+that matches the sensor's output rather than an idealised CAD shape. The two
+routes are best understood as partners: \routeA{} establishes the measured
+core, \routeB{} extrapolates it into a complete model.
+
+\section{Summary}
+\label{sec:cmp_summary}
+
+The choice between \routeA{} and \routeB{} is governed by data availability and
+output purpose, not by which pipeline is ``more advanced''. \routeA{} answers
+``what did we measure?'' with a pose-corrected fusion of the evidence;
+\routeB{} answers ``what is the whole object?'' with a prior-informed
+completion. Their outputs differ in completeness, in the status of unobserved
+regions, and in the availability of ground truth --- and therefore their
+evaluation protocols differ too. The next two chapters report the experimental
+results of each route in turn.

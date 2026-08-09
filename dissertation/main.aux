@@ -1,0 +1,415 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\providecommand \oddpage@label [2]{}
+\@writefile{toc}{\contentsline {chapter}{Abstract}{I}{chapter*.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{Dedication}{II}{chapter*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{Acknowledgements}{III}{chapter*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{Declaration}{IV}{chapter*.4}\protected@file@percent }
+\citation{hopkin2019underwater,hu2022acoustic}
+\@writefile{toc}{\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:introduction}{{1}{1}{Introduction}{chapter.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.1}Background and motivation}{1}{section.1.1}\protected@file@percent }
+\newlabel{sec:background}{{1.1}{1}{Background and motivation}{section.1.1}{}}
+\citation{suop_dataset,suop_detection}
+\citation{suop_dataset}
+\citation{suop_detection}
+\@writefile{toc}{\contentsline {section}{\numberline {1.2}Problem statement}{2}{section.1.2}\protected@file@percent }
+\newlabel{sec:problem_statement}{{1.2}{2}{Problem statement}{section.1.2}{}}
+\citation{zhou2018open3d}
+\citation{pedregosa2011sklearn}
+\citation{paszke2019pytorch}
+\@writefile{toc}{\contentsline {section}{\numberline {1.3}Research question and objectives}{3}{section.1.3}\protected@file@percent }
+\newlabel{sec:research_question}{{1.3}{3}{Research question and objectives}{section.1.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.4}Scope and contributions}{4}{section.1.4}\protected@file@percent }
+\newlabel{sec:scope}{{1.4}{4}{Scope and contributions}{section.1.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.5}Thesis structure}{4}{section.1.5}\protected@file@percent }
+\newlabel{sec:structure}{{1.5}{4}{Thesis structure}{section.1.5}{}}
+\citation{hopkin2019underwater}
+\citation{hu2022acoustic}
+\citation{guerneve2014three}
+\@writefile{toc}{\contentsline {chapter}{\numberline {2}Literature Review}{6}{chapter.2}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:literature}{{2}{6}{Literature Review}{chapter.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.1}Underwater acoustic sensing}{6}{section.2.1}\protected@file@percent }
+\newlabel{sec:lit_sonar}{{2.1}{6}{Underwater acoustic sensing}{section.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.1}Why acoustics}{6}{subsection.2.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.2}The BlueView BV5000}{6}{subsection.2.1.2}\protected@file@percent }
+\citation{rusu2009towards}
+\citation{hoppe1992surface}
+\citation{hoppe1992surface}
+\citation{rusu2009fast}
+\citation{besl1992method,chen1992object}
+\citation{chen1992object,rusinkiewicz2001efficient}
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}Point-cloud processing primitives}{7}{section.2.2}\protected@file@percent }
+\newlabel{sec:lit_pointcloud}{{2.2}{7}{Point-cloud processing primitives}{section.2.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Denoising and decimation}{7}{subsection.2.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Normals and local descriptors}{7}{subsection.2.2.2}\protected@file@percent }
+\citation{fischler1981ransac}
+\citation{zhou2018open3d}
+\citation{lu1997globally,choi2015robust}
+\citation{choi2015robust,zhou2018open3d}
+\citation{cormen2009introduction}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Registration}{8}{section.2.3}\protected@file@percent }
+\newlabel{sec:lit_registration}{{2.3}{8}{Registration}{section.2.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Pairwise registration}{8}{subsection.2.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Multiway registration and pose graphs}{8}{subsection.2.3.2}\protected@file@percent }
+\citation{kazhdan2006poisson,kazhdan2013screened}
+\citation{bernardini1999ball}
+\citation{curless1996volumetric}
+\citation{lorensen1987marching}
+\citation{newcombe2011kinectfusion}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Surface reconstruction}{9}{section.2.4}\protected@file@percent }
+\newlabel{sec:lit_surface}{{2.4}{9}{Surface reconstruction}{section.2.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.1}Implicit methods: Screened Poisson}{9}{subsection.2.4.1}\protected@file@percent }
+\newlabel{eq:poisson}{{2.1}{9}{Implicit methods: Screened Poisson}{equation.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.2}Local methods: Ball-Pivoting}{9}{subsection.2.4.2}\protected@file@percent }
+\citation{qi2017pointnet}
+\citation{qi2017pointnetpp}
+\citation{yuan2018pcn}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4.3}TSDF fusion}{10}{subsection.2.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}Learned point-cloud completion}{10}{section.2.5}\protected@file@percent }
+\newlabel{sec:lit_completion}{{2.5}{10}{Learned point-cloud completion}{section.2.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.1}The problem}{10}{subsection.2.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.2}PointNet and permutation invariance}{10}{subsection.2.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.3}PCN: Point Completion Network}{10}{subsection.2.5.3}\protected@file@percent }
+\citation{yang2018folding}
+\citation{fan2017point}
+\citation{fan2017point}
+\citation{tatarchenko2019multi}
+\citation{chang2015shapenet}
+\citation{geiger2012we}
+\citation{dai2017scannet}
+\citation{wang2021joint}
+\citation{williams2016underwater,galceran2014survey}
+\citation{suop_detection}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.4}The Chamfer distance}{11}{subsection.2.5.4}\protected@file@percent }
+\newlabel{eq:chamfer}{{2.2}{11}{The Chamfer distance}{equation.2.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5.5}Related completion works}{11}{subsection.2.5.5}\protected@file@percent }
+\citation{qi2017pointnetpp}
+\citation{jocher2023ultralytics}
+\@writefile{toc}{\contentsline {section}{\numberline {2.6}The SUOP detection baselines}{12}{section.2.6}\protected@file@percent }
+\newlabel{sec:lit_suop}{{2.6}{12}{The SUOP detection baselines}{section.2.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.7}Summary}{12}{section.2.7}\protected@file@percent }
+\newlabel{sec:lit_summary}{{2.7}{12}{Summary}{section.2.7}{}}
+\citation{suop_dataset}
+\citation{bluview5000}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}The \textsc  {Suop}{} Dataset and Data Preparation}{13}{chapter.3}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:dataset}{{3}{13}{The \suop {} Dataset and Data Preparation}{chapter.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Dataset description}{13}{section.3.1}\protected@file@percent }
+\newlabel{sec:dataset_desc}{{3.1}{13}{Dataset description}{section.3.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Example \textsc  {Suop}{} clouds used in this dissertation. Left to right: a chair, a tyre and a dummy at the 3~m range (rendered in the benchmark view). The objects are small relative to the full scene and require segmentation before any reconstruction can be attempted.}}{14}{figure.caption.8}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:suop_dataset}{{3.1}{14}{Example \suop {} clouds used in this dissertation. Left to right: a chair, a tyre and a dummy at the 3~m range (rendered in the benchmark view). The objects are small relative to the full scene and require segmentation before any reconstruction can be attempted}{figure.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}The critical limitation: it is a detection dataset}{14}{subsection.3.1.1}\protected@file@percent }
+\newlabel{sec:detection_dataset}{{3.1.1}{14}{The critical limitation: it is a detection dataset}{subsection.3.1.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Acquisition audit}{15}{section.3.2}\protected@file@percent }
+\newlabel{sec:acq_audit}{{3.2}{15}{Acquisition audit}{section.3.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Extraction and cleaning}{15}{section.3.3}\protected@file@percent }
+\newlabel{sec:prep_extract}{{3.3}{15}{Extraction and cleaning}{section.3.3}{}}
+\citation{fischler1981ransac}
+\citation{ester1996density}
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Denoising statistics across the 120-case prepared cache. Values are medians over cases. SOR = statistical outlier removal.}}{16}{table.caption.9}\protected@file@percent }
+\newlabel{tab:denoise}{{3.1}{16}{Denoising statistics across the 120-case prepared cache. Values are medians over cases. SOR = statistical outlier removal}{table.caption.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Segmentation}{16}{section.3.4}\protected@file@percent }
+\newlabel{sec:prep_seg}{{3.4}{16}{Segmentation}{section.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Plane removal}{16}{subsection.3.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Scale-consistent clustering}{16}{subsection.3.4.2}\protected@file@percent }
+\newlabel{eq:diag}{{3.1}{16}{Scale-consistent clustering}{equation.3.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Temporal background rejection}{17}{subsection.3.4.3}\protected@file@percent }
+\newlabel{fig:seg_tyre}{{3.2a}{17}{Tyre: per-case moving clusters}{figure.caption.10}{}}
+\newlabel{sub@fig:seg_tyre}{{a}{17}{Tyre: per-case moving clusters}{figure.caption.10}{}}
+\newlabel{fig:seg_dummy}{{3.2b}{17}{Dummy: temporal-background-subtracted proposals}{figure.caption.10}{}}
+\newlabel{sub@fig:seg_dummy}{{b}{17}{Dummy: temporal-background-subtracted proposals}{figure.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Segmentation outputs used as Route~A inputs. Each panel shows the extracted moving, scale-consistent object cluster for one case. The static sonar frame makes temporal background subtraction possible because the object moves while the background remains fixed.}}{17}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:segments}{{3.2}{17}{Segmentation outputs used as Route~A inputs. Each panel shows the extracted moving, scale-consistent object cluster for one case. The static sonar frame makes temporal background subtraction possible because the object moves while the background remains fixed}{figure.caption.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.5}Case selection}{17}{section.3.5}\protected@file@percent }
+\newlabel{sec:prep_case}{{3.5}{17}{Case selection}{section.3.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.6}Summary}{18}{section.3.6}\protected@file@percent }
+\newlabel{sec:dataset_summary}{{3.6}{18}{Summary}{section.3.6}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Route~A: Multi-View Geometric Fusion}{19}{chapter.4}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:routeA}{{4}{19}{Route~A: Multi-View Geometric Fusion}{chapter.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Why Route~A?}{19}{section.4.1}\protected@file@percent }
+\newlabel{sec:why_routeA}{{4.1}{19}{Why Route~A?}{section.4.1}{}}
+\citation{rusu2009fast}
+\citation{fischler1981ransac}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Route~A output for the chair and dummy: fused measured cloud, Screened Poisson surface and BPA surface rendered together. The two meshers expose the trade-off between global smooth completion (Poisson) and local evidence-driven triangulation (BPA).}}{20}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:routeA_overview}{{4.1}{20}{Route~A output for the chair and dummy: fused measured cloud, Screened Poisson surface and BPA surface rendered together. The two meshers expose the trade-off between global smooth completion (Poisson) and local evidence-driven triangulation (BPA)}{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Stage 1: pairwise registration}{20}{section.4.2}\protected@file@percent }
+\newlabel{sec:routea_pairwise}{{4.2}{20}{Stage 1: pairwise registration}{section.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Preprocessing}{20}{subsection.4.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}FPFH descriptors}{20}{subsection.4.2.2}\protected@file@percent }
+\citation{besl1992method}
+\citation{cormen2009introduction}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}RANSAC global alignment}{21}{subsection.4.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.4}Point-to-plane ICP refinement}{21}{subsection.4.2.4}\protected@file@percent }
+\newlabel{eq:icp}{{4.1}{21}{Point-to-plane ICP refinement}{equation.4.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.5}Edge acceptance}{21}{subsection.4.2.5}\protected@file@percent }
+\citation{choi2015robust,zhou2018open3d}
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Stage 2: pose-graph optimisation}{22}{section.4.3}\protected@file@percent }
+\newlabel{sec:routea_graph}{{4.3}{22}{Stage 2: pose-graph optimisation}{section.4.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Maximum-fitness spanning tree}{22}{subsection.4.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Loop closures}{22}{subsection.4.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.3}Global optimisation}{22}{subsection.4.3.3}\protected@file@percent }
+\newlabel{eq:posegraph}{{4.2}{22}{Global optimisation}{equation.4.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}Stage 3: fusion}{22}{section.4.4}\protected@file@percent }
+\newlabel{sec:routea_fusion}{{4.4}{22}{Stage 3: fusion}{section.4.4}{}}
+\citation{kazhdan2006poisson,kazhdan2013screened}
+\citation{bernardini1999ball}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Stage 4: surface reconstruction}{23}{section.4.5}\protected@file@percent }
+\newlabel{sec:routea_meshing}{{4.5}{23}{Stage 4: surface reconstruction}{section.4.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}Screened Poisson reconstruction}{23}{subsection.4.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}Ball-Pivoting Algorithm}{23}{subsection.4.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.3}Why produce both?}{23}{subsection.4.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.6}Variants}{23}{section.4.6}\protected@file@percent }
+\newlabel{sec:routea_variants}{{4.6}{23}{Variants}{section.4.6}{}}
+\citation{curless1996volumetric}
+\citation{lorensen1987marching}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.1}View-aware seabed-plane registration}{24}{subsection.4.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.2}Sonar-native first-return ray TSDF}{24}{subsection.4.6.2}\protected@file@percent }
+\newlabel{sec:routea_tsdf}{{4.6.2}{24}{Sonar-native first-return ray TSDF}{subsection.4.6.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.7}Summary}{24}{section.4.7}\protected@file@percent }
+\newlabel{sec:routea_summary}{{4.7}{24}{Summary}{section.4.7}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Route~B: Single-View Learned Completion}{26}{chapter.5}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:routeB}{{5}{26}{Route~B: Single-View Learned Completion}{chapter.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Why Route~B?}{26}{section.5.1}\protected@file@percent }
+\newlabel{sec:why_routeB}{{5.1}{26}{Why Route~B?}{section.5.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Route~B output for the dummy after 10 epochs: left, the sonar-like partial input; centre, the complete reference used as ground truth; right, the PCN fine completion. The completion contains inferred points in regions that were never visible in the input.}}{27}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:routeB_overview}{{5.1}{27}{Route~B output for the dummy after 10 epochs: left, the sonar-like partial input; centre, the complete reference used as ground truth; right, the PCN fine completion. The completion contains inferred points in regions that were never visible in the input}{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Stage 1: single-view capture and simulation}{27}{section.5.2}\protected@file@percent }
+\newlabel{sec:routeB_sim}{{5.2}{27}{Stage 1: single-view capture and simulation}{section.5.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Real capture}{27}{subsection.5.2.1}\protected@file@percent }
+\citation{katz2007direct}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces A single real \textsc  {Suop}{} chair ping (fan-shaped range return). A single view of this kind is the deployment input for \textbf  {Route~B}{}: the object's far side, underside and much of its frame are simply absent from the data.}}{28}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:chair_pcn}{{5.2}{28}{A single real \suop {} chair ping (fan-shaped range return). A single view of this kind is the deployment input for \routeB {}: the object's far side, underside and much of its frame are simply absent from the data}{figure.caption.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}Simulated acquisition}{28}{subsection.5.2.2}\protected@file@percent }
+\citation{yuan2018pcn}
+\citation{paszke2019pytorch}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Sonar-realistic partial simulation. A complete reference shape is viewed from a random viewpoint (hidden-point removal keeps only visible points), then corrupted with Gaussian range noise and an angular sector removal that imitates an acoustic shadow.}}{29}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:sim_partial}{{5.3}{29}{Sonar-realistic partial simulation. A complete reference shape is viewed from a random viewpoint (hidden-point removal keeps only visible points), then corrupted with Gaussian range noise and an angular sector removal that imitates an acoustic shadow}{figure.caption.14}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Stage 2: the PCN architecture}{29}{section.5.3}\protected@file@percent }
+\newlabel{sec:routeB_arch}{{5.3}{29}{Stage 2: the PCN architecture}{section.5.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces PCN{} architecture used in this project. The encoder is a PointNet-style shared-MLP plus symmetric max pooling that produces a permutation-invariant 1024-dimensional global latent; the decoder predicts $M$ coarse points with a fully connected head and then folds a $g\times g$ grid around each coarse point to produce $M g^2$ fine points.}}{29}{table.caption.15}\protected@file@percent }
+\newlabel{tab:pcn_arch}{{5.1}{29}{\pcn {} architecture used in this project. The encoder is a PointNet-style shared-MLP plus symmetric max pooling that produces a permutation-invariant 1024-dimensional global latent; the decoder predicts $M$ coarse points with a fully connected head and then folds a $g\times g$ grid around each coarse point to produce $M g^2$ fine points}{table.caption.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}Encoder: why shared MLPs and max pooling}{29}{subsection.5.3.1}\protected@file@percent }
+\citation{yang2018folding,yuan2018pcn}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.2}Decoder: why coarse-to-fine with folding}{30}{subsection.5.3.2}\protected@file@percent }
+\newlabel{eq:folding}{{5.1}{30}{Decoder: why coarse-to-fine with folding}{equation.5.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}Stage 3: paired training data}{30}{section.5.4}\protected@file@percent }
+\newlabel{sec:routeB_data}{{5.4}{30}{Stage 3: paired training data}{section.5.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.1}Two generators}{30}{subsection.5.4.1}\protected@file@percent }
+\newlabel{sec:routeB_generators}{{5.4.1}{30}{Two generators}{subsection.5.4.1}{}}
+\citation{kingma2015adam}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.2}Output pairs}{31}{subsection.5.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.5}Stage 4: training}{31}{section.5.5}\protected@file@percent }
+\newlabel{sec:routeB_training}{{5.5}{31}{Stage 4: training}{section.5.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.1}Loss}{31}{subsection.5.5.1}\protected@file@percent }
+\newlabel{eq:routeB_loss}{{5.2}{31}{Loss}{equation.5.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.2}Optimiser and schedule}{31}{subsection.5.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.3}Training runs}{32}{subsection.5.5.3}\protected@file@percent }
+\newlabel{sec:routeB_runs}{{5.5.3}{32}{Training runs}{subsection.5.5.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.6}Summary}{32}{section.5.6}\protected@file@percent }
+\newlabel{sec:routeB_summary}{{5.6}{32}{Summary}{section.5.6}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Why \textbf  {Route~A}, Why \textbf  {Route~B}: The Two Routes Compared}{33}{chapter.6}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:comparison}{{6}{33}{Why \routeA , Why \routeB : The Two Routes Compared}{chapter.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Positioning: two routes, one question}{33}{section.6.1}\protected@file@percent }
+\newlabel{sec:cmp_positioning}{{6.1}{33}{Positioning: two routes, one question}{section.6.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Side-by-side comparison}{34}{section.6.2}\protected@file@percent }
+\newlabel{sec:cmp_table}{{6.2}{34}{Side-by-side comparison}{section.6.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.1}{\ignorespaces Direct comparison of the two routes. The critical column is ``Output meaning'': \textbf  {Route~A}{} fuses measurements, \textbf  {Route~B}{} infers missing geometry. Consequently their evaluation metrics measure different questions and must not be exchanged.}}{35}{table.caption.16}\protected@file@percent }
+\newlabel{tab:route_comparison}{{6.1}{35}{Direct comparison of the two routes. The critical column is ``Output meaning'': \routeA {} fuses measurements, \routeB {} infers missing geometry. Consequently their evaluation metrics measure different questions and must not be exchanged}{table.caption.16}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.3}Output differences in depth}{36}{section.6.3}\protected@file@percent }
+\newlabel{sec:cmp_outputs}{{6.3}{36}{Output differences in depth}{section.6.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.1}What each output claims}{36}{subsection.6.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{1. Completeness versus fidelity.}{36}{paragraph*.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{2. Ground-truth availability.}{36}{paragraph*.18}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{3. What ``better'' means.}{36}{paragraph*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.4}When the routes connect}{37}{section.6.4}\protected@file@percent }
+\newlabel{sec:cmp_connection}{{6.4}{37}{When the routes connect}{section.6.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.5}Summary}{37}{section.6.5}\protected@file@percent }
+\newlabel{sec:cmp_summary}{{6.5}{37}{Summary}{section.6.5}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Route~A Results}{38}{chapter.7}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:resultsA}{{7}{38}{Route~A Results}{chapter.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.1}Registration results}{38}{section.7.1}\protected@file@percent }
+\newlabel{sec:resultsA_registration}{{7.1}{38}{Registration results}{section.7.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.1}{\ignorespaces Route~A pose-graph results. 276 pairwise registrations were tested per object ($\binom  {24}{2}$); edges with fitness $\geq 0.25$ entered the graph; the maximum-fitness spanning tree used 23 edges and every remaining reliable edge became a loop closure. Fused counts are the pose-corrected points before and after the 7.5~mm fusion voxel. All 24 views were reachable for every object.}}{38}{table.caption.20}\protected@file@percent }
+\newlabel{tab:registration_results}{{7.1}{38}{Route~A pose-graph results. 276 pairwise registrations were tested per object ($\binom {24}{2}$); edges with fitness $\geq 0.25$ entered the graph; the maximum-fitness spanning tree used 23 edges and every remaining reliable edge became a loop closure. Fused counts are the pose-corrected points before and after the 7.5~mm fusion voxel. All 24 views were reachable for every object}{table.caption.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.1}{\ignorespaces Segmented chair views used as \textbf  {Route~A}{} input (one panel per accepted case). Each panel shows the isolated chair cluster after seabed-plane removal and scale-consistent clustering at the published $0.40$~m diagonal scale. The views are partial and noisy --- note the variable leg coverage --- yet registration must still align them into one frame.}}{39}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:chair_segments}{{7.1}{39}{Segmented chair views used as \routeA {} input (one panel per accepted case). Each panel shows the isolated chair cluster after seabed-plane removal and scale-consistent clustering at the published $0.40$~m diagonal scale. The views are partial and noisy --- note the variable leg coverage --- yet registration must still align them into one frame}{figure.caption.21}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.2}Meshing results}{39}{section.7.2}\protected@file@percent }
+\newlabel{sec:resultsA_meshing}{{7.2}{39}{Meshing results}{section.7.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.2}{\ignorespaces Route~A mesh statistics. Poisson (depth 8, trimmed at the 2\% lowest-density vertices) produces smooth closed surfaces with many more vertices; BPA produces sparser surfaces that preserve genuine gaps. The divergence between the two column pairs is itself the evidence of measurement uncertainty (see Section~\ref {sec:resultsA_interpretation}).}}{39}{table.caption.22}\protected@file@percent }
+\newlabel{tab:meshing_results}{{7.2}{39}{Route~A mesh statistics. Poisson (depth 8, trimmed at the 2\% lowest-density vertices) produces smooth closed surfaces with many more vertices; BPA produces sparser surfaces that preserve genuine gaps. The divergence between the two column pairs is itself the evidence of measurement uncertainty (see \secref {sec:resultsA_interpretation})}{table.caption.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.2}{\ignorespaces Route~A chair: fused measured cloud and the two meshes. The chair's open frame is a stress test: leg-like structures are registered across many views, and the difference between the closed Poisson surface and the open BPA surface is clearly visible in the seat underside and between legs.}}{40}{figure.caption.23}\protected@file@percent }
+\newlabel{fig:chair_reconstruction}{{7.2}{40}{Route~A chair: fused measured cloud and the two meshes. The chair's open frame is a stress test: leg-like structures are registered across many views, and the difference between the closed Poisson surface and the open BPA surface is clearly visible in the seat underside and between legs}{figure.caption.23}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.3}{\ignorespaces Route~A tyre: fused cloud, Poisson and BPA surfaces. The toroidal rim is recovered; the inner wall and far side, which no 3~m view observed fully, show the Poisson-vs-BPA disagreement most clearly.}}{40}{figure.caption.24}\protected@file@percent }
+\newlabel{fig:tyre_reconstruction}{{7.3}{40}{Route~A tyre: fused cloud, Poisson and BPA surfaces. The toroidal rim is recovered; the inner wall and far side, which no 3~m view observed fully, show the Poisson-vs-BPA disagreement most clearly}{figure.caption.24}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.4}{\ignorespaces Route~A dummy: fused cloud, Poisson and BPA surfaces. The vertical mannequin shape and the shoulder/arm junctions are visible; the head and torso are the best-supported regions.}}{41}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:dummy_reconstruction}{{7.4}{41}{Route~A dummy: fused cloud, Poisson and BPA surfaces. The vertical mannequin shape and the shoulder/arm junctions are visible; the head and torso are the best-supported regions}{figure.caption.25}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.1}Turntable views}{41}{subsection.7.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7.5}{\ignorespaces Chair reconstruction turntable: the same fused model viewed from eight azimuths. Consistency across views is the visual equivalent of the graph's loop-closure redundancy.}}{41}{figure.caption.26}\protected@file@percent }
+\newlabel{fig:chair_turntable}{{7.5}{41}{Chair reconstruction turntable: the same fused model viewed from eight azimuths. Consistency across views is the visual equivalent of the graph's loop-closure redundancy}{figure.caption.26}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7.6}{\ignorespaces Dummy reconstruction turntable. The rear and side views show where the measured coverage is thinnest and where Poisson and BPA therefore diverge most.}}{42}{figure.caption.27}\protected@file@percent }
+\newlabel{fig:dummy_turntable}{{7.6}{42}{Dummy reconstruction turntable. The rear and side views show where the measured coverage is thinnest and where Poisson and BPA therefore diverge most}{figure.caption.27}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.3}Variant results}{42}{section.7.3}\protected@file@percent }
+\newlabel{sec:resultsA_variants}{{7.3}{42}{Variant results}{section.7.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7.3}{\ignorespaces Surface-fit metrics for the two \textbf  {Route~A}{} variants. Median observed-to-surface residuals of $2.9$--$5.0$~mm confirm that the fused surfaces sit tightly on the registered returns; the P95 values show that a small tail of returns (often multipath or mis-segmented points) lies a few centimetres off. ``Supported'' is the fraction of surface within the stated radius of a measured return.}}{42}{table.caption.28}\protected@file@percent }
+\newlabel{tab:routeA_metrics}{{7.3}{42}{Surface-fit metrics for the two \routeA {} variants. Median observed-to-surface residuals of $2.9$--$5.0$~mm confirm that the fused surfaces sit tightly on the registered returns; the P95 values show that a small tail of returns (often multipath or mis-segmented points) lies a few centimetres off. ``Supported'' is the fraction of surface within the stated radius of a measured return}{table.caption.28}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.1}Model-assisted hybrid outputs}{43}{subsection.7.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7.4}Interpretation: what these numbers do and do not prove}{43}{section.7.4}\protected@file@percent }
+\newlabel{sec:resultsA_interpretation}{{7.4}{43}{Interpretation: what these numbers do and do not prove}{section.7.4}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {8}Route~B Results}{44}{chapter.8}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:resultsB}{{8}{44}{Route~B Results}{chapter.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8.1}Training progress}{44}{section.8.1}\protected@file@percent }
+\newlabel{sec:resultsB_training}{{8.1}{44}{Training progress}{section.8.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8.1}{\ignorespaces Route~B training summary. Symmetric Chamfer loss $L = \mathrm  {CD}(C,G)+\mathrm  {CD}(F,G)$ on unit-normalised clouds. All three runs converge: the final training CD is 1--2 orders of magnitude below its epoch-1 value, and validation CD stays below training CD, indicating no memorisation at the sampled checkpoints.}}{44}{table.caption.29}\protected@file@percent }
+\newlabel{tab:routeB_training}{{8.1}{44}{Route~B training summary. Symmetric Chamfer loss $L = \mathrm {CD}(C,G)+\mathrm {CD}(F,G)$ on unit-normalised clouds. All three runs converge: the final training CD is 1--2 orders of magnitude below its epoch-1 value, and validation CD stays below training CD, indicating no memorisation at the sampled checkpoints}{table.caption.29}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8.2}Epoch-by-epoch evidence}{44}{section.8.2}\protected@file@percent }
+\newlabel{sec:resultsB_epochs}{{8.2}{44}{Epoch-by-epoch evidence}{section.8.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.1}{\ignorespaces Dummy \textbf  {Route~B}{} training progression, epochs 1--10 (mesh-conditioned run). Each row shows the same semantic triple: partial input, complete reference, network completion. The completion evolves from a rough blob (epoch 1) to a recognisable mannequin silhouette with limbs (epoch 10).}}{45}{figure.caption.30}\protected@file@percent }
+\newlabel{fig:dummy_epochs}{{8.1}{45}{Dummy \routeB {} training progression, epochs 1--10 (mesh-conditioned run). Each row shows the same semantic triple: partial input, complete reference, network completion. The completion evolves from a rough blob (epoch 1) to a recognisable mannequin silhouette with limbs (epoch 10)}{figure.caption.30}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.2}{\ignorespaces Drum \textbf  {Route~B}{} training progression, epochs 1--10. The cylindrical barrel and end caps emerge early; later epochs refine the end-cap rims and reduce blur at the edges of the completion.}}{46}{figure.caption.31}\protected@file@percent }
+\newlabel{fig:drum_epochs}{{8.2}{46}{Drum \routeB {} training progression, epochs 1--10. The cylindrical barrel and end caps emerge early; later epochs refine the end-cap rims and reduce blur at the edges of the completion}{figure.caption.31}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.3}{\ignorespaces Dummy completion at epoch 5 versus epoch 10 (top to bottom: input, reference, completion; left column epoch 5, right column epoch 10). The later checkpoint sharpens the shoulder/arm junctions and legs.}}{46}{figure.caption.32}\protected@file@percent }
+\newlabel{fig:dummy_ep05_vs_10}{{8.3}{46}{Dummy completion at epoch 5 versus epoch 10 (top to bottom: input, reference, completion; left column epoch 5, right column epoch 10). The later checkpoint sharpens the shoulder/arm junctions and legs}{figure.caption.32}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8.3}Inference on a real SUOP partial}{47}{section.8.3}\protected@file@percent }
+\newlabel{sec:resultsB_chair}{{8.3}{47}{Inference on a real SUOP partial}{section.8.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.4}{\ignorespaces Route~B chair inference on a real \textsc  {Suop}{} partial: input segment (1{,}595 points, 0.729~m diagonal), PCN completion at epoch 1 (0.659~m diagonal) and at epoch 15 (0.713~m diagonal). The completion grows toward the input scale while adding inferred structure in the unobserved regions.}}{47}{figure.caption.33}\protected@file@percent }
+\newlabel{fig:chair_pcn_progression}{{8.4}{47}{Route~B chair inference on a real \suop {} partial: input segment (1{,}595 points, 0.729~m diagonal), PCN completion at epoch 1 (0.659~m diagonal) and at epoch 15 (0.713~m diagonal). The completion grows toward the input scale while adding inferred structure in the unobserved regions}{figure.caption.33}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8.4}Interpretation: what these numbers do and do not prove}{47}{section.8.4}\protected@file@percent }
+\newlabel{sec:resultsB_interpretation}{{8.4}{47}{Interpretation: what these numbers do and do not prove}{section.8.4}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {9}Discussion}{49}{chapter.9}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:discussion}{{9}{49}{Discussion}{chapter.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {9.1}What the results mean together}{49}{section.9.1}\protected@file@percent }
+\newlabel{sec:disc_together}{{9.1}{49}{What the results mean together}{section.9.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {9.2}Coverage across categories}{50}{section.9.2}\protected@file@percent }
+\newlabel{sec:disc_coverage}{{9.2}{50}{Coverage across categories}{section.9.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {9.1}{\ignorespaces Result coverage across categories. The pipelines completed numerically for all five objects; rendered evidence is richest for chair/tyre/dummy. The table is a transparency statement, not a quality ranking.}}{50}{table.caption.34}\protected@file@percent }
+\newlabel{tab:coverage}{{9.1}{50}{Result coverage across categories. The pipelines completed numerically for all five objects; rendered evidence is richest for chair/tyre/dummy. The table is a transparency statement, not a quality ranking}{table.caption.34}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {9.3}Threats to validity}{50}{section.9.3}\protected@file@percent }
+\newlabel{sec:disc_threats}{{9.3}{50}{Threats to validity}{section.9.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.3.1}Internal validity}{50}{subsection.9.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.3.2}External validity}{51}{subsection.9.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.3.3}Reliability and reproducibility}{51}{subsection.9.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {9.4}Implications for practice}{52}{section.9.4}\protected@file@percent }
+\newlabel{sec:disc_implications}{{9.4}{52}{Implications for practice}{section.9.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {9.5}Summary}{52}{section.9.5}\protected@file@percent }
+\newlabel{sec:disc_summary}{{9.5}{52}{Summary}{section.9.5}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {10}Conclusions and Future Work}{53}{chapter.10}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:conclusions}{{10}{53}{Conclusions and Future Work}{chapter.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {10.1}Summary of contributions}{53}{section.10.1}\protected@file@percent }
+\newlabel{sec:conc_summary}{{10.1}{53}{Summary of contributions}{section.10.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {10.2}Answers to the research question and objectives}{54}{section.10.2}\protected@file@percent }
+\newlabel{sec:conc_objectives}{{10.2}{54}{Answers to the research question and objectives}{section.10.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {10.3}Limitations}{55}{section.10.3}\protected@file@percent }
+\newlabel{sec:conc_limitations}{{10.3}{55}{Limitations}{section.10.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {10.4}Future work}{55}{section.10.4}\protected@file@percent }
+\newlabel{sec:conc_future}{{10.4}{55}{Future work}{section.10.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.4.1}A calibrated multi-view acquisition with external reference}{55}{subsection.10.4.1}\protected@file@percent }
+\citation{yang2018folding}
+\citation{xie2020pointr}
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.4.2}Hardening each route}{56}{subsection.10.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {10.4.3}Chaining the routes}{56}{subsection.10.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {10.5}Closing remark}{57}{section.10.5}\protected@file@percent }
+\newlabel{sec:conc_closing}{{10.5}{57}{Closing remark}{section.10.5}{}}
+\bibstyle{IEEEtran}
+\bibdata{references}
+\bibcite{hopkin2019underwater}{{1}{}{{}}{{}}}
+\bibcite{hu2022acoustic}{{2}{}{{}}{{}}}
+\bibcite{suop_dataset}{{3}{}{{}}{{}}}
+\bibcite{suop_detection}{{4}{}{{}}{{}}}
+\bibcite{zhou2018open3d}{{5}{}{{}}{{}}}
+\bibcite{pedregosa2011sklearn}{{6}{}{{}}{{}}}
+\bibcite{paszke2019pytorch}{{7}{}{{}}{{}}}
+\bibcite{guerneve2014three}{{8}{}{{}}{{}}}
+\bibcite{rusu2009towards}{{9}{}{{}}{{}}}
+\bibcite{hoppe1992surface}{{10}{}{{}}{{}}}
+\bibcite{rusu2009fast}{{11}{}{{}}{{}}}
+\bibcite{besl1992method}{{12}{}{{}}{{}}}
+\bibcite{chen1992object}{{13}{}{{}}{{}}}
+\bibcite{rusinkiewicz2001efficient}{{14}{}{{}}{{}}}
+\bibcite{fischler1981ransac}{{15}{}{{}}{{}}}
+\bibcite{lu1997globally}{{16}{}{{}}{{}}}
+\bibcite{choi2015robust}{{17}{}{{}}{{}}}
+\bibcite{cormen2009introduction}{{18}{}{{}}{{}}}
+\bibcite{kazhdan2006poisson}{{19}{}{{}}{{}}}
+\bibcite{kazhdan2013screened}{{20}{}{{}}{{}}}
+\bibcite{bernardini1999ball}{{21}{}{{}}{{}}}
+\bibcite{curless1996volumetric}{{22}{}{{}}{{}}}
+\bibcite{lorensen1987marching}{{23}{}{{}}{{}}}
+\bibcite{newcombe2011kinectfusion}{{24}{}{{}}{{}}}
+\bibcite{qi2017pointnet}{{25}{}{{}}{{}}}
+\bibcite{qi2017pointnetpp}{{26}{}{{}}{{}}}
+\bibcite{yuan2018pcn}{{27}{}{{}}{{}}}
+\bibcite{yang2018folding}{{28}{}{{}}{{}}}
+\bibcite{fan2017point}{{29}{}{{}}{{}}}
+\bibcite{tatarchenko2019multi}{{30}{}{{}}{{}}}
+\bibcite{chang2015shapenet}{{31}{}{{}}{{}}}
+\bibcite{geiger2012we}{{32}{}{{}}{{}}}
+\bibcite{dai2017scannet}{{33}{}{{}}{{}}}
+\bibcite{wang2021joint}{{34}{}{{}}{{}}}
+\bibcite{williams2016underwater}{{35}{}{{}}{{}}}
+\bibcite{galceran2014survey}{{36}{}{{}}{{}}}
+\bibcite{jocher2023ultralytics}{{37}{}{{}}{{}}}
+\bibcite{bluview5000}{{38}{}{{}}{{}}}
+\bibcite{ester1996density}{{39}{}{{}}{{}}}
+\bibcite{katz2007direct}{{40}{}{{}}{{}}}
+\bibcite{kingma2015adam}{{41}{}{{}}{{}}}
+\bibcite{xie2020pointr}{{42}{}{{}}{{}}}
+\bibcite{hunter2007matplotlib}{{43}{}{{}}{{}}}
+\citation{zhou2018open3d}
+\citation{pedregosa2011sklearn}
+\citation{paszke2019pytorch}
+\citation{hunter2007matplotlib}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Environment and Reproducibility}{62}{appendix.A}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{app:environment}{{A}{62}{Environment and Reproducibility}{appendix.A}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.1}{\ignorespaces Principal software environment. The Conda environment \texttt  {suop-recon} was created from \texttt  {environment.yml}; PyTorch was installed with CUDA support via \texttt  {torch\_install.bat}.}}{62}{table.caption.36}\protected@file@percent }
+\newlabel{tab:env}{{A.1}{62}{Principal software environment. The Conda environment \texttt {suop-recon} was created from \texttt {environment.yml}; PyTorch was installed with CUDA support via \texttt {torch\_install.bat}}{table.caption.36}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A.1}Run order and scripts}{62}{section.A.1}\protected@file@percent }
+\newlabel{app:scripts}{{A.1}{62}{Run order and scripts}{section.A.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {A.2}{\ignorespaces Principal project scripts and their stage. Batch wrappers (\texttt  {*.bat}) run each Python script and record logs and completion markers.}}{63}{table.caption.37}\protected@file@percent }
+\newlabel{tab:scripts}{{A.2}{63}{Principal project scripts and their stage. Batch wrappers (\texttt {*.bat}) run each Python script and record logs and completion markers}{table.caption.37}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A.2}Seeds and determinism}{63}{section.A.2}\protected@file@percent }
+\newlabel{app:seeds}{{A.2}{63}{Seeds and determinism}{section.A.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A.3}Outputs inventory}{64}{section.A.3}\protected@file@percent }
+\newlabel{app:outputs}{{A.3}{64}{Outputs inventory}{section.A.3}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {B}Supplementary Figures}{65}{appendix.B}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{app:figures}{{B}{65}{Supplementary Figures}{appendix.B}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.1}{\ignorespaces Chair temporal segmentation: geometry that is static across acquisitions in the fixed sonar frame is subtracted, leaving the moving chair clusters. Because the sonar did not move, temporal background subtraction is a valid and powerful segmentation tool.}}{65}{figure.caption.38}\protected@file@percent }
+\newlabel{fig:app_chair_temporal}{{B.1}{65}{Chair temporal segmentation: geometry that is static across acquisitions in the fixed sonar frame is subtracted, leaving the moving chair clusters. Because the sonar did not move, temporal background subtraction is a valid and powerful segmentation tool}{figure.caption.38}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.2}{\ignorespaces Tyre reconstruction turntable (view-aware variant). The toroidal envelope is consistent across azimuths; the inner wall is only partially supported by measurements, which the Poisson/BPA divergence makes visible.}}{65}{figure.caption.39}\protected@file@percent }
+\newlabel{fig:app_tyre_turntable}{{B.2}{65}{Tyre reconstruction turntable (view-aware variant). The toroidal envelope is consistent across azimuths; the inner wall is only partially supported by measurements, which the Poisson/BPA divergence makes visible}{figure.caption.39}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.3}{\ignorespaces Drum \textbf  {Route~B}{} completion at epoch 10: partial input (left), complete reference (centre), network completion (right). The end-cap rims and barrel sides are recovered; the far end cap is inferred, not measured.}}{66}{figure.caption.40}\protected@file@percent }
+\newlabel{fig:app_drum_epoch10}{{B.3}{66}{Drum \routeB {} completion at epoch 10: partial input (left), complete reference (centre), network completion (right). The end-cap rims and barrel sides are recovered; the far end cap is inferred, not measured}{figure.caption.40}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.4}{\ignorespaces Dummy \textbf  {Route~B}{} completion at epoch 5 (same triple layout). The gross proportions are correct but the limbs are softer than at epoch 10 (compare Figure~\ref {fig:dummy_ep05_vs_10}).}}{66}{figure.caption.41}\protected@file@percent }
+\newlabel{fig:app_dummy_ep05}{{B.4}{66}{Dummy \routeB {} completion at epoch 5 (same triple layout). The gross proportions are correct but the limbs are softer than at epoch 10 (compare \figref {fig:dummy_ep05_vs_10})}{figure.caption.41}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.5}{\ignorespaces Example \textsc  {Suop}{} clouds at the 3~m range in the benchmark rendering view. The object is a small fraction of each scene; the majority of returns belong to the seabed and rig.}}{66}{figure.caption.42}\protected@file@percent }
+\newlabel{fig:app_suop}{{B.5}{66}{Example \suop {} clouds at the 3~m range in the benchmark rendering view. The object is a small fraction of each scene; the majority of returns belong to the seabed and rig}{figure.caption.42}{}}
+\providecommand\NAT@force@numbers{}\NAT@force@numbers
+\@writefile{lof}{\contentsline {figure}{\numberline {B.6}{\ignorespaces Effect of range on the same object: the same dummy at 3~m, 6~m and 10~m (as published in the dataset). Point density and SNR fall sharply with range, which is why the geometric pipelines restrict fusion to the 3~m cases.}}{67}{figure.caption.43}\protected@file@percent }
+\newlabel{fig:app_range}{{B.6}{67}{Effect of range on the same object: the same dummy at 3~m, 6~m and 10~m (as published in the dataset). Point density and SNR fall sharply with range, which is why the geometric pipelines restrict fusion to the 3~m cases}{figure.caption.43}{}}
+\gdef \@abspage@last{82}

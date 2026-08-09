@@ -1,0 +1,191 @@
+% =====================================================================
+%  MSc Dissertation — Heriot-Watt University thesis format
+%  (following the HWU submission guidelines as implemented by the
+%   Heriot_Watt_Thesis_Template: A4, 40mm left / 20mm other margins,
+%   12pt Times-like font, 1.5 line spacing, Roman preliminaries,
+%   Arabic main text, 14pt bold chapters, declaration bound in.)
+%
+%  Compile: pdflatex main && bibtex main && pdflatex main && pdflatex main
+% =====================================================================
+\documentclass[12pt,a4paper]{report}
+
+% ------------------------- fonts & encoding -------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}           % Times New Roman look (per HWU template)
+\usepackage[protrusion=true,expansion=false]{microtype}
+\usepackage{setspace}
+\setstretch{1.5}                % 1.5 line spacing (HWU requirement)
+
+% ------------------------- geometry (HWU: 40mm left, 20mm rest) -----
+\usepackage[a4paper,left=40mm,right=20mm,top=20mm,bottom=20mm,
+            headheight=20pt,headsep=25pt,footskip=30pt]{geometry}
+
+% ------------------------- page styles -------------------------------
+\usepackage{fancyhdr}
+% preliminary pages: empty header, Roman page number in footer
+\fancypagestyle{preliminary}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[C]{\thepage}%
+}
+% main text: chapter title in header (10pt italics, no bold), Arabic page
+% number centred in footer
+\fancypagestyle{chapter}{%
+  \fancyhf{}%
+  \fancyhead[L]{\normalfont\itshape\fontsize{10pt}{12pt}\selectfont\nouppercase{\leftmark}}%
+  \fancyhead[R]{}%
+  \fancyfoot[C]{\thepage}%
+  \renewcommand{\headrulewidth}{0.4pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
+\pagestyle{preliminary}
+
+% ------------------------- headings (HWU sizes) ----------------------
+\usepackage{titlesec}
+% Chapter: 14pt, bold, capitalised initial
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\fontsize{14pt}{16.8pt}\selectfont}
+  {\chaptertitlename\ \thechapter}{14pt}{}
+\titlespacing{\chapter}{0pt}{10pt}{25pt}
+% Section: 12pt, bold
+\titleformat{\section}[hang]
+  {\normalfont\bfseries\fontsize{12pt}{14.4pt}\selectfont}
+  {\thesection}{5pt}{}
+\titlespacing{\section}{0pt}{25pt}{15pt}
+% Subsection: 12pt, bold + italic
+\titleformat{\subsection}[hang]
+  {\normalfont\bfseries\itshape\fontsize{12pt}{14.4pt}\selectfont}
+  {\thesubsection}{5pt}{}
+\titlespacing{\subsection}{0pt}{20pt}{10pt}
+% Subsubsection: unnumbered, not in ToC (HWU guideline)
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{2}
+
+% ------------------------- tables & figures -------------------------
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{adjustbox}
+\usepackage{subcaption}
+\usepackage[table]{xcolor}
+\usepackage{float}
+\usepackage{placeins}
+\graphicspath{{figures/}}
+\setlength{\textfloatsep}{14pt plus 2pt minus 4pt}
+\setlength{\floatsep}{12pt plus 2pt minus 4pt}
+
+% ------------------------- math & lists -----------------------------
+\usepackage{amsmath}            % amssymb deliberately omitted: newtxmath already provides its symbols
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt,parsep=0pt}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf,skip=6pt}
+
+% ------------------------- code listings ----------------------------
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\small,
+  frame=single,
+  rulecolor=\color{gray!60},
+  backgroundcolor=\color{gray!8},
+  breaklines=true,
+  columns=fullflexible,
+  captionpos=b,
+  aboveskip=8pt,
+  belowskip=8pt,
+}
+\usepackage{xcolor}
+\definecolor{navy}{RGB}{18,32,49}
+\definecolor{blueA}{RGB}{37,99,235}
+\definecolor{orangeB}{RGB}{244,122,36}
+\definecolor{cyanD}{RGB}{18,184,212}
+
+% ------------------------- references -------------------------------
+\usepackage[square,sort&compress,numbers]{natbib}
+\renewcommand{\bibname}{References}
+\usepackage{url}
+\urlstyle{same}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=navy,
+  citecolor=blueA,
+  urlcolor=blueA,
+  pdftitle={Sonar-Based 3D Reconstruction of Small Underwater Objects: Two Routes for the SUOP Dataset},
+  pdfauthor={},
+}
+
+% ------------------------- thesis information ------------------------
+\newcommand{\thesistitle}{Sonar-Based 3D Reconstruction of Small Underwater
+Objects: Two Routes for the \suop{} Dataset}
+\newcommand{\authorName}{[Your Full Name]}
+\newcommand{\degreeQualification}{Master of Science}
+\newcommand{\school}{School of Engineering and Physical Sciences}
+\newcommand{\university}{Heriot-Watt University}
+\newcommand{\monthDate}{August}
+\newcommand{\yearDate}{2026}
+
+% ------------------------- list names --------------------------------
+\renewcommand{\contentsname}{Table of Contents}
+
+% ------------------------- custom commands --------------------------
+\newcommand{\routeA}{\textbf{Route~A}}
+\newcommand{\routeB}{\textbf{Route~B}}
+\newcommand{\suop}{\textsc{Suop}}
+\newcommand{\pcn}{PCN}
+\newcommand{\chd}{Chamfer}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\tabref}[1]{Table~\ref{#1}}
+\newcommand{\secref}[1]{Section~\ref{#1}}
+\newcommand{\eqrefn}[1]{Equation~\eqref{#1}}
+\newcommand{\mm}{\,\text{mm}}
+\newcommand{\m}{\,\text{m}}
+
+% =====================================================================
+\begin{document}
+
+% ------------------------- preliminaries -----------------------------
+% HWU: all preliminaries use Roman numerals; the title page itself is
+% unnumbered (empty style). The titlepage environment resets the page
+% counter to 1, so the abstract becomes page ii, etc.
+\pagestyle{empty}
+\pagenumbering{Roman}
+\input{chapters/frontmatter}
+
+\pagestyle{preliminary}
+\tableofcontents
+\clearpage
+\listoffigures
+\clearpage
+\listoftables
+\clearpage
+
+% ------------------------- main matter ------------------------------
+\pagestyle{chapter}
+\pagenumbering{arabic}
+\input{chapters/ch01_introduction}
+\input{chapters/ch02_literature_review}
+\input{chapters/ch03_dataset_preparation}
+\input{chapters/ch04_route_a}
+\input{chapters/ch05_route_b}
+\input{chapters/ch06_route_comparison}
+\input{chapters/ch07_results_route_a}
+\input{chapters/ch08_results_route_b}
+\input{chapters/ch09_discussion}
+\input{chapters/ch10_conclusions}
+
+% ------------------------- references -------------------------------
+\clearpage
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+% ------------------------- appendices -------------------------------
+\clearpage
+\appendix
+\input{chapters/appendix_a}
+\input{chapters/appendix_b}
+
+\end{document}

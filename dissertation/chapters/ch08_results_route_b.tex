@@ -1,0 +1,156 @@
+% =====================================================================
+% Chapter 8 — Route B Results
+% =====================================================================
+\chapter{Route~B Results}
+\label{ch:resultsB}
+
+This chapter reports the results of \routeB{}. It presents the training
+progress of the three main runs (\secref{sec:resultsB_training}), the
+qualitative epoch-by-epoch evidence for the dummy and drum
+(\secref{sec:resultsB_epochs}), the inference behaviour on a real \suop{}
+chair segment (\secref{sec:resultsB_chair}), and an interpretation of what the
+loss curves do and do not prove (\secref{sec:resultsB_interpretation}).
+
+\section{Training progress}
+\label{sec:resultsB_training}
+
+\tabref{tab:routeB_training} reports the training and validation Chamfer loss
+of the three principal runs. All runs used the RTX~4060 Laptop GPU, batch size
+32--48, Adam at learning rate $10^{-3}$ and 6000 training pairs with a 10\%
+hold-out.
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{adjustbox}{max width=\textwidth}
+  \begin{tabular}{@{}lccccccc@{}}
+    \toprule
+    Run & Data & Epochs & CD@ep1 & CD@final & Val CD@ep1 & Val CD@final & Total time \\
+    \midrule
+    Dummy (mesh-cond.) & \texttt{dataset\_dummy\_suop} & 10 & 0.03993 & 0.00112 & 0.00459 & 0.00073 & 1705~s \\
+    Drum & \texttt{dataset\_drum\_suop} & 10 & 0.01435 & 0.00178 & 0.00362 & 0.00051 & 1642~s \\
+    Chair & procedural & 150 & 0.01657 & 0.00228 & 0.00159 & 0.00048 & 14{,}827~s \\
+    \bottomrule
+  \end{tabular}
+  \end{adjustbox}
+  \caption{Route~B training summary. Symmetric Chamfer loss $L =
+  \mathrm{CD}(C,G)+\mathrm{CD}(F,G)$ on unit-normalised clouds. All three runs
+  converge: the final training CD is 1--2 orders of magnitude below its
+  epoch-1 value, and validation CD stays below training CD, indicating no
+  memorisation at the sampled checkpoints.}
+  \label{tab:routeB_training}
+\end{table}
+
+The dummy run (trained on \routeA{}-mesh-conditioned pairs) shows the fastest
+relative improvement, dropping from 0.03993 to 0.00112 within ten epochs; the
+drum converges from a lower starting point (0.01435) to 0.00178. The chair
+run, trained for 150 epochs, reaches a training CD of $2.28\times10^{-3}$
+while the validation CD plateaus around $5\times10^{-4}$ after epoch 45 ---
+the typical signature of a model that has learned the coarse structure and is
+only polishing fine detail.
+
+\section{Epoch-by-epoch evidence}
+\label{sec:resultsB_epochs}
+
+The epoch contact sheets (\figref{fig:dummy_epochs}, \figref{fig:drum_epochs})
+render, for every epoch, the same three panels: the sonar-like partial input,
+the complete reference (ground truth) and the network's fine completion.
+Reading a sheet left-to-right shows the input, the truth, and what the network
+produces from the input alone --- a direct visual check that the completion is
+actually derived from the partial rather than from a memorised shape.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.88\textwidth]{fig_dummy_epochs.png}
+  \caption{Dummy \routeB{} training progression, epochs 1--10 (mesh-conditioned
+  run). Each row shows the same semantic triple: partial input, complete
+  reference, network completion. The completion evolves from a rough blob
+  (epoch 1) to a recognisable mannequin silhouette with limbs (epoch 10).}
+  \label{fig:dummy_epochs}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.88\textwidth]{fig_drum_epochs.png}
+  \caption{Drum \routeB{} training progression, epochs 1--10. The cylindrical
+  barrel and end caps emerge early; later epochs refine the end-cap rims and
+  reduce blur at the edges of the completion.}
+  \label{fig:drum_epochs}
+\end{figure}
+
+\figref{fig:dummy_ep05_vs_10} compares epoch 5 and epoch 10 for the dummy
+directly: the mid-training completion has the correct gross proportions but
+softer limbs, while the epoch-10 completion is crisper and closer to the
+reference silhouette.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.98\textwidth]{fig_dummy_ep05_vs_10.png}
+  \caption{Dummy completion at epoch 5 versus epoch 10 (top to bottom: input,
+  reference, completion; left column epoch 5, right column epoch 10). The
+  later checkpoint sharpens the shoulder/arm junctions and legs.}
+  \label{fig:dummy_ep05_vs_10}
+\end{figure}
+
+\section{Inference on a real SUOP partial}
+\label{sec:resultsB_chair}
+
+The trained chair checkpoint (\texttt{pcn\_chair.pth}) was applied to a real
+\suop{} chair segment --- a single unprocessed partial view, the deployment
+scenario that \routeB{} was designed for. \figref{fig:chair_pcn_progression}
+shows the input and the completions at epochs 1 and 15.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.98\textwidth]{fig_chair_pcn_progression.png}
+  \caption{Route~B chair inference on a real \suop{} partial: input segment
+  (1{,}595 points, 0.729~m diagonal), PCN completion at epoch 1 (0.659~m
+  diagonal) and at epoch 15 (0.713~m diagonal). The completion grows toward the
+  input scale while adding inferred structure in the unobserved regions.}
+  \label{fig:chair_pcn_progression}
+\end{figure}
+
+Two quantitative observations are worth recording:
+
+\begin{enumerate}
+  \item \textbf{Scale recovery.} The completed cloud's bounding-box diagonal
+  moves from 0.659~m at epoch 1 to 0.713~m at epoch 15, converging toward the
+  0.729~m input diagonal. Because training normalises to the unit sphere, the
+  network must \emph{re-learn} the absolute scale of the object category; the
+  convergence of the output diagonal toward the input diagonal is evidence
+  that it does.
+  \item \textbf{Completeness.} The completion emits a full 4096-point (fine)
+  cloud from a 1{,}595-point partial, filling the far side, the underside and
+  parts of the frame that the single view never measured. This is the defining
+  behaviour of \routeB{} and the direct contrast with \routeA{}'s open,
+  evidence-limited output.
+\end{enumerate}
+
+\section{Interpretation: what these numbers do and do not prove}
+\label{sec:resultsB_interpretation}
+
+The results establish the following:
+
+\begin{enumerate}
+  \item \textbf{The architecture trains.} All runs reduce Chamfer loss
+  substantially and monotonically, and validation stays below training,
+  showing the PCN with coarse-to-fine decoding and folding is trainable on
+  this data.
+  \item \textbf{The prior is category-shaped.} The epoch sheets show the
+  completions take on the correct category anatomy (mannequin silhouette,
+  barrel shape, chair frame), which only a learned prior can supply from a
+  partial view.
+  \item \textbf{Inference generalises to real sonar.} The real chair partial
+  is completed at the correct scale, and the result is visually coherent.
+\end{enumerate}
+
+What the numbers do \emph{not} prove is physical accuracy of the inferred
+geometry. The Chamfer loss is computed against \emph{synthetic} references, so
+a low loss means ``consistent with the training distribution'', not
+``correct against the real object''. A visually plausible completion can be a
+hallucination --- the network may interpolate between training shapes rather
+than recover the actual object. The dummy's mesh-conditioned training set
+mitigates this by matching the sensor's geometry distribution, but the real
+\suop{} objects have no external scan with which to verify the completions.
+This threat to validity is addressed in \secref{ch:discussion} and the future
+work of \secref{ch:conclusions}.

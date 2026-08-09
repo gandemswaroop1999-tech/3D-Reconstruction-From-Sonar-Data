@@ -1,0 +1,22 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Denoising statistics across the 120-case prepared cache. Values are medians over cases. SOR = statistical outlier removal.}}{16}{table.caption.9}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces PCN{} architecture used in this project. The encoder is a PointNet-style shared-MLP plus symmetric max pooling that produces a permutation-invariant 1024-dimensional global latent; the decoder predicts $M$ coarse points with a fully connected head and then folds a $g\times g$ grid around each coarse point to produce $M g^2$ fine points.}}{29}{table.caption.15}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {6.1}{\ignorespaces Direct comparison of the two routes. The critical column is ``Output meaning'': \textbf {Route~A}{} fuses measurements, \textbf {Route~B}{} infers missing geometry. Consequently their evaluation metrics measure different questions and must not be exchanged.}}{35}{table.caption.16}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {7.1}{\ignorespaces Route~A pose-graph results. 276 pairwise registrations were tested per object ($\binom {24}{2}$); edges with fitness $\geq 0.25$ entered the graph; the maximum-fitness spanning tree used 23 edges and every remaining reliable edge became a loop closure. Fused counts are the pose-corrected points before and after the 7.5~mm fusion voxel. All 24 views were reachable for every object.}}{38}{table.caption.20}%
+\contentsline {table}{\numberline {7.2}{\ignorespaces Route~A mesh statistics. Poisson (depth 8, trimmed at the 2\% lowest-density vertices) produces smooth closed surfaces with many more vertices; BPA produces sparser surfaces that preserve genuine gaps. The divergence between the two column pairs is itself the evidence of measurement uncertainty (see Section~\ref {sec:resultsA_interpretation}).}}{39}{table.caption.22}%
+\contentsline {table}{\numberline {7.3}{\ignorespaces Surface-fit metrics for the two \textbf {Route~A}{} variants. Median observed-to-surface residuals of $2.9$--$5.0$~mm confirm that the fused surfaces sit tightly on the registered returns; the P95 values show that a small tail of returns (often multipath or mis-segmented points) lies a few centimetres off. ``Supported'' is the fraction of surface within the stated radius of a measured return.}}{42}{table.caption.28}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {8.1}{\ignorespaces Route~B training summary. Symmetric Chamfer loss $L = \mathrm {CD}(C,G)+\mathrm {CD}(F,G)$ on unit-normalised clouds. All three runs converge: the final training CD is 1--2 orders of magnitude below its epoch-1 value, and validation CD stays below training CD, indicating no memorisation at the sampled checkpoints.}}{44}{table.caption.29}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {9.1}{\ignorespaces Result coverage across categories. The pipelines completed numerically for all five objects; rendered evidence is richest for chair/tyre/dummy. The table is a transparency statement, not a quality ranking.}}{50}{table.caption.34}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {A.1}{\ignorespaces Principal software environment. The Conda environment \texttt {suop-recon} was created from \texttt {environment.yml}; PyTorch was installed with CUDA support via \texttt {torch\_install.bat}.}}{62}{table.caption.36}%
+\contentsline {table}{\numberline {A.2}{\ignorespaces Principal project scripts and their stage. Batch wrappers (\texttt {*.bat}) run each Python script and record logs and completion markers.}}{63}{table.caption.37}%
+\addvspace {10\p@ }

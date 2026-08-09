@@ -1,0 +1,244 @@
+% =====================================================================
+% Chapter 7 — Route A Results
+% =====================================================================
+\chapter{Route~A Results}
+\label{ch:resultsA}
+
+This chapter reports the experimental results of \routeA{}. It presents the
+registration outcomes for all five \suop{} categories
+(\secref{sec:resultsA_registration}), the mesh statistics
+(\secref{sec:resultsA_meshing}), the variant results (view-aware and ray TSDF,
+\secref{sec:resultsA_variants}) and a discussion of what the numbers do and do
+not prove (\secref{sec:resultsA_interpretation}). The full pipeline ran on all
+five object categories with the 24-view curation described in
+\secref{ch:dataset}; every run produced fused clouds and both meshes, i.e.\
+5/5 categories completed the full geometric pipeline.
+
+\section{Registration results}
+\label{sec:resultsA_registration}
+
+\tabref{tab:registration_results} summarises the pose-graph stage for the five
+objects. All $24 \times 5$ views were connected: for every category the
+maximum-fitness spanning tree reached 24/24 views and no segment was left
+outside the graph. The number of reliable pairwise edges (fitness $\geq 0.25$)
+varies between 131 (drum) and 197 (dummy) of the 276 pairs tested, and the
+number of loop closures --- edges beyond the 23 MST edges --- ranges from 108
+to 174. The high loop-closure counts are important: they mean the pose graph
+was strongly over-constrained, so drift along the tree was corrected by many
+independent constraints rather than trusted as a chain.
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{adjustbox}{max width=\textwidth}
+  \begin{tabular}{@{}lcccccc@{}}
+    \toprule
+    Object & Views & Reliable edges & MST edges & Loop closures & Fused points (raw) & Fused points (7.5~mm) \\
+    \midrule
+    Tyre  & 24 & 172 & 23 & 149 & 37{,}031 & 33{,}970 \\
+    Dummy & 24 & 197 & 23 & 174 & 22{,}692 & 21{,}421 \\
+    Drum  & 24 & 131 & 23 & 108 & 106{,}436 & 99{,}544 \\
+    Chair & 24 & 189 & 23 & 166 & 30{,}519 & 26{,}027 \\
+    Net   & 24 & 162 & 23 & 139 & 31{,}288 & 28{,}251 \\
+    \bottomrule
+  \end{tabular}
+  \end{adjustbox}
+  \caption{Route~A pose-graph results. 276 pairwise registrations were tested
+  per object ($\binom{24}{2}$); edges with fitness $\geq 0.25$ entered the
+  graph; the maximum-fitness spanning tree used 23 edges and every remaining
+  reliable edge became a loop closure. Fused counts are the pose-corrected
+  points before and after the 7.5~mm fusion voxel. All 24 views were reachable
+  for every object.}
+  \label{tab:registration_results}
+\end{table}
+
+The pairwise computation cost was substantial but feasible: between 912~s
+(dummy) and 1098~s (chair) per object on the CPU for the 276 pairwise
+FPFH/RANSAC/ICP evaluations, dominated by the RANSAC global alignment. This is
+an offline cost and was accepted; the per-view ICP refinement itself is
+milliseconds once initialised.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{fig_chair_segments.png}
+  \caption{Segmented chair views used as \routeA{} input (one panel per
+  accepted case). Each panel shows the isolated chair cluster after seabed-plane
+  removal and scale-consistent clustering at the published $0.40$~m diagonal
+  scale. The views are partial and noisy --- note the variable leg coverage ---
+  yet registration must still align them into one frame.}
+  \label{fig:chair_segments}
+\end{figure}
+
+\section{Meshing results}
+\label{sec:resultsA_meshing}
+
+Both Screened Poisson (depth 8) and BPA (four radii) produced clean meshes for
+all five objects. \tabref{tab:meshing_results} reports vertex and triangle
+counts after trimming and cleaning (largest connected component only).
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{adjustbox}{max width=\textwidth}
+  \begin{tabular}{@{}lcccccc@{}}
+    \toprule
+    Object & Fused points & Poisson verts & Poisson tris & BPA verts & BPA tris \\
+    \midrule
+    Tyre  & 33{,}841 & 69{,}819 & 139{,}684 & 14{,}143 & 24{,}009 \\
+    Dummy & 21{,}306 & 29{,}787 & 59{,}419 & 11{,}194 & 19{,}331 \\
+    Drum  & 99{,}678 & 125{,}598 & 251{,}677 & 33{,}429 & 53{,}649 \\
+    Chair & 25{,}872 & 85{,}891 & 172{,}484 & 9{,}534 & 15{,}317 \\
+    Net   & 28{,}240 & 76{,}319 & 152{,}721 & 5{,}220 & 8{,}313 \\
+    \bottomrule
+  \end{tabular}
+  \end{adjustbox}
+  \caption{Route~A mesh statistics. Poisson (depth 8, trimmed at the 2\%
+  lowest-density vertices) produces smooth closed surfaces with many more
+  vertices; BPA produces sparser surfaces that preserve genuine gaps. The
+  divergence between the two column pairs is itself the evidence of
+  measurement uncertainty (see \secref{sec:resultsA_interpretation}).}
+  \label{tab:meshing_results}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.94\textwidth]{fig_chair_reconstruction.png}
+  \caption{Route~A chair: fused measured cloud and the two meshes. The chair's
+  open frame is a stress test: leg-like structures are registered across many
+  views, and the difference between the closed Poisson surface and the open BPA
+  surface is clearly visible in the seat underside and between legs.}
+  \label{fig:chair_reconstruction}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.94\textwidth]{fig_tyre_reconstruction.png}
+  \caption{Route~A tyre: fused cloud, Poisson and BPA surfaces. The toroidal
+  rim is recovered; the inner wall and far side, which no 3~m view observed
+  fully, show the Poisson-vs-BPA disagreement most clearly.}
+  \label{fig:tyre_reconstruction}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.94\textwidth]{fig_dummy_reconstruction.png}
+  \caption{Route~A dummy: fused cloud, Poisson and BPA surfaces. The vertical
+  mannequin shape and the shoulder/arm junctions are visible; the head and
+  torso are the best-supported regions.}
+  \label{fig:dummy_reconstruction}
+\end{figure}
+
+\subsection{Turntable views}
+\figref{fig:chair_turntable} shows the chair reconstruction rotated around the
+vertical axis. The turntable renders make the 3D consistency of the fused
+model auditable from all sides rather than from a single favourable angle.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.98\textwidth]{fig_chair_turntable.png}
+  \caption{Chair reconstruction turntable: the same fused model viewed from
+  eight azimuths. Consistency across views is the visual equivalent of the
+  graph's loop-closure redundancy.}
+  \label{fig:chair_turntable}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.98\textwidth]{fig_dummy_turntable.png}
+  \caption{Dummy reconstruction turntable. The rear and side views show where
+  the measured coverage is thinnest and where Poisson and BPA therefore
+  diverge most.}
+  \label{fig:dummy_turntable}
+\end{figure}
+
+\section{Variant results}
+\label{sec:resultsA_variants}
+
+The two variants of \secref{sec:routea_variants} were run on the chair and
+tyre, the two categories with the strongest segmentation. Their metrics are
+reported in \tabref{tab:routeA_metrics}. The metric
+\emph{observed-to-surface} measures, for every accepted registered return, its
+distance to the reconstructed surface; a small median means the surface is
+faithful to the measurements. \emph{Surface supported} is the fraction of
+surface points with a measured return within a support radius (40~mm for the
+view-aware variant, the support limit for the TSDF).
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{adjustbox}{max width=\textwidth}
+  \begin{tabular}{@{}lcccccc@{}}
+    \toprule
+    Variant & Object & Accepted cases & Fused returns & Median (mm) & P95 (mm) & Supported \\
+    \midrule
+    View-aware SE(2) & Chair & 7 & 972 & 4.14 & 19.31 & 0.63 ($\le 20$~mm) \\
+    View-aware SE(2) & Tyre  & 3 & 5{,}000 & 2.91 & 15.82 & 1.00 ($\le 40$~mm) \\
+    Ray TSDF & Chair & 2 & 2{,}205 & 2.92 & 9.89 & 1.00 \\
+    Ray TSDF & Tyre  & 5 & 7{,}982 & 4.99 & 20.05 & 1.00 \\
+    \bottomrule
+  \end{tabular}
+  \end{adjustbox}
+  \caption{Surface-fit metrics for the two \routeA{} variants. Median
+  observed-to-surface residuals of $2.9$--$5.0$~mm confirm that the fused
+  surfaces sit tightly on the registered returns; the P95 values show that a
+  small tail of returns (often multipath or mis-segmented points) lies a few
+  centimetres off. ``Supported'' is the fraction of surface within the stated
+  radius of a measured return.}
+  \label{tab:routeA_metrics}
+\end{table}
+
+\begin{itemize}
+  \item \textbf{View-aware SE(2).} The chair accepted 7 of its candidate
+  cases (972 fused returns) with a median residual of 4.14~mm; the tyre
+  accepted 3 (5{,}000 returns) with median 2.91~mm and essentially total
+  surface support within 40~mm. The small accepted-case counts are the honest
+  cost of the explicit acceptance gate: cases whose planar fit is weak are
+  rejected rather than silently fused.
+  \item \textbf{Ray TSDF.} The sonar-native variant fused 2,205 chair returns
+  from 2 views and 7,982 tyre returns from 5 views into 4--5~mm voxel grids.
+  Its surfaces are the most conservative: unsupported vertices are removed, so
+  the fraction of multiview-supported surface is only 0.176 (chair) and 0.499
+  (tyre) --- the TSDF reports \emph{per-vertex} how many views support it,
+  which is exactly the coverage information a sonar reconstruction should
+  provide.
+\end{itemize}
+
+\subsection{Model-assisted hybrid outputs}
+For completeness, the project also produced ``recognizable'' hybrid outputs in
+which a dimensionally constrained template (folding chair, parametric tyre)
+completes the registered evidence. These are \emph{model-assisted}, not
+measurement-derived: the chair completion places inferred frame members
+between measured joints, and the tyre completion uses the measured width with a
+parametric profile. The tyre hybrid's larger residuals (median 18.5~mm,
+P95 65.8~mm) quantify the cost of forcing a template onto sparse evidence, and
+make clear why the purely measured variants are preferred for claims of
+geometric accuracy.
+
+\section{Interpretation: what these numbers do and do not prove}
+\label{sec:resultsA_interpretation}
+
+The numbers above establish four things rigorously:
+
+\begin{enumerate}
+  \item \textbf{Pipeline completion.} All five categories completed the full
+  registration$\to$fusion$\to$meshing chain; the graphs are fully connected
+  (24/24 views), so no object was abandoned.
+  \item \textbf{Measurement consistency.} Median observed-to-surface residuals
+  of a few millimetres mean that, wherever the sonar did measure, the fused
+  surface agrees with the measurements at a scale comparable to the
+  segmentation and registration tolerances.
+  \item \textbf{Multi-view benefit.} The large loop-closure counts and the
+  visual agreement across turntable views show that the fused model is
+  self-consistent, which a single scan cannot be.
+  \item \textbf{Uncertainty localisation.} The systematic Poisson-vs-BPA
+  divergence in the least-supported regions (chair underside, tyre inner wall,
+  dummy rear) is a map of where the reconstruction is extrapolated rather than
+  measured.
+\end{enumerate}
+
+What the numbers do \emph{not} prove is absolute geometric accuracy: there is
+no external CAD or scanned reference in \suop{}, so ``4~mm residual'' is a
+self-consistency figure, not an error against truth. Likewise, mesh vertex
+counts are indicators of pipeline behaviour, not quality. These caveats are
+central to the discussion in \secref{ch:discussion} and motivate the
+calibrated-acquisition future work of \secref{ch:conclusions}.

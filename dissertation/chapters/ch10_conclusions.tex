@@ -1,0 +1,185 @@
+% =====================================================================
+% Chapter 10 — Conclusions and Future Work
+% =====================================================================
+\chapter{Conclusions and Future Work}
+\label{ch:conclusions}
+
+This chapter concludes the dissertation. It restates what was built and what
+was learned (\secref{sec:conc_summary}), maps the results back to the research
+question and objectives (\secref{sec:conc_objectives}), and proposes the
+experiments that would convert this project's self-consistency evidence into
+externally validated accuracy (\secref{sec:conc_future}).
+
+\section{Summary of contributions}
+\label{sec:conc_summary}
+
+This dissertation set out to answer how incomplete acoustic-sonar returns of
+small underwater objects, as provided by the \suop{} dataset, can be converted
+into useful 3D representations --- and to make the choice between two
+reconstruction paradigms explicit. The project delivered:
+
+\begin{enumerate}
+  \item \textbf{An honest data audit.} The \suop{} release was characterised
+  as a detection dataset: a fixed BlueView BV5000, an object moved by hand,
+  no logged poses, truncated ping exports. Every design decision in the
+  project follows from these facts (\secref{ch:dataset}).
+  \item \textbf{A complete preparation pipeline.} Extraction, denoising,
+  plane removal, temporal background rejection and scale-consistent clustering
+  converted 120 raw cases into clean per-object segments, with a curated
+  24-view subset per object for fusion (\secref{ch:dataset}).
+  \item \textbf{\routeA{} --- multi-view geometric fusion.} A fully geometric
+  pipeline (FPFH/RANSAC/ICP $\to$ pose graph with MST and loop closures $\to$
+  fusion $\to$ Screened Poisson + BPA) ran successfully on all five
+  categories: 24/24 views connected per object, fused clouds of 7--100\,k
+  points, and two clean meshes per object. Two hardened variants --- a
+  seabed-plane-constrained SE(2) registration and a sonar-native first-return
+  ray TSDF with explicit per-vertex measurement support --- achieved median
+  observed-to-surface residuals of $2.9$--$5.0\mm$ (\secref{ch:resultsA}).
+  \item \textbf{\routeB{} --- single-view learned completion.} A PCN with a
+  PointNet-style encoder and a coarse-to-fine folding decoder was trained with
+  a symmetric Chamfer loss on sonar-realistic partials. The training data came
+  from procedural models \emph{and} from \routeA{}'s own meshes, linking the
+  routes. All runs converged (final training CD $1.1\times10^{-3}$--
+  $2.3\times10^{-3}$), epoch sheets show category-shaped completions, and a
+  real chair partial was completed at the correct scale
+  (\secref{ch:resultsB}).
+  \item \textbf{An explicit route rationale.} The conditions under which each
+  route is the right answer, and the difference in what their outputs mean,
+  were stated precisely and compared side by side (\secref{ch:comparison}).
+\end{enumerate}
+
+\section{Answers to the research question and objectives}
+\label{sec:conc_objectives}
+
+Returning to the research question of \secref{sec:research_question}:
+
+\begin{quote}
+\emph{How can incomplete acoustic-sonar returns of small underwater objects,
+as provided by the \suop{} dataset, be converted into a useful 3D object
+representation, and which reconstruction route should be chosen under which
+data-availability conditions?}
+\end{quote}
+
+The answer, supported by the results, is twofold.
+
+\emph{How to convert the returns:} by treating segmentation as a first-class
+problem (the object must be separated from a dominant seabed), estimating
+object poses from geometry rather than reading them from an encoder, and then
+choosing between fusion and completion. When multiple views exist, FPFH/RANSAC/
+ICP plus pose-graph optimisation reliably aligns the partials into a
+self-consistent measured model. When only one view exists, a PCN trained on
+sonar-realistic (partial, complete) pairs --- grounded where possible in the
+geometric route's meshes --- produces a complete, category-shaped point cloud.
+
+\emph{Which route to choose:} \routeA{} whenever overlapping views of a rigid
+object are available and the output must be a faithful record of measurements
+(inspection, safety assessment); \routeB{} whenever only one view exists and a
+complete representation is required (classification features, simulation
+targets, manipulation). The routes are complementary; their outputs differ in
+completeness, in the status of unobserved regions, and in the availability of
+ground truth; and they must therefore be evaluated with different protocols.
+
+Against the six objectives of \secref{sec:research_question}: O1 (data
+characterisation) is met in \secref{ch:dataset}; O2 (preparation pipeline) in
+\secref{ch:dataset}; O3 (\routeA{}) in \secref{ch:routeA} and
+\secref{ch:resultsA}; O4 (\routeB{}) in \secref{ch:routeB} and
+\secref{ch:resultsB}; O5 (route rationale) in \secref{ch:comparison}; and O6
+(evaluation and future work) across \secref{ch:resultsA}--\secref{ch:discussion}
+and the remainder of this chapter.
+
+\section{Limitations}
+\label{sec:conc_limitations}
+
+The limitations already detailed in \secref{ch:discussion} are summarised here
+as the boundary of what can be claimed:
+
+\begin{enumerate}
+  \item \textbf{No external geometric ground truth.} \suop{} provides no CAD
+  models, no logged object poses and no independent scan. All \routeA{}
+  accuracy claims are therefore self-consistency measures, and \routeB{}
+  completions cannot be verified against the real objects.
+  \item \textbf{Uneven evidence.} The drum and net categories completed the
+  pipelines numerically but lack dedicated rendered validation, and only
+  chair/tyre received the view-aware and ray-TSDF variant treatment.
+  \item \textbf{Compute-bounded exploration.} The pairwise registration cost
+  and the multi-hour chair run limited the number of configurations
+  (thresholds, voxels, network sizes) that could be swept.
+\end{enumerate}
+
+\section{Future work}
+\label{sec:conc_future}
+
+\subsection{A calibrated multi-view acquisition with external reference}
+The single most valuable next step is to re-acquire the five \suop{} object
+categories under a \emph{pose-calibrated} protocol, as proposed in the
+project's acquisition specification (\texttt{SUOP\_ACQUISITION\_RECONSTRUCTION.md}):
+
+\begin{enumerate}
+  \item Keep the object rigid and fixed; move the sonar, or place the object
+  on a non-reflective indexed turntable.
+  \item Log the full calibrated $SE(3)$ transform for every scan (encoder or
+  survey accuracy $\approx 2$~mm and $0.2^\circ$ at the 3~m working range).
+  \item Acquire 24 azimuths at $15^\circ$ spacing at the 3~m range, in two
+  elevation bands (the \suop{} $45^\circ$ close-range setup and a
+  $15$--$25^\circ$ grazing setup), so that chair legs, seat undersides and
+  tyre sidewalls are observed.
+  \item Record background-only scans before and after the sequence, full
+  per-ping pan/tilt/time/sound-speed metadata, and sound-speed profiles at
+  start and end.
+  \item Scan the same objects with a high-resolution optical or laser system
+  (or use the manufacturer's CAD) to obtain an \emph{external} reference mesh.
+\end{enumerate}
+
+With logged poses, the pose-estimation stage of \routeA{} is bypassed and the
+raw first-return rays can be integrated directly into a 3--5~mm TSDF, giving a
+\emph{measured} reference. With the external scan, both routes can be
+evaluated quantitatively on the same objects:
+
+\begin{itemize}
+  \item \routeA{}: Chamfer distance and F-score between the fused/TSDF surface
+  and the external mesh; registration error against the logged poses; coverage
+  as the fraction of the external surface within a tolerance.
+  \item \routeB{}: Chamfer distance and F-score of the completions against the
+  external mesh on \emph{held-out real partials} --- this is the definitive
+  test of whether the learned prior generalises to genuine sonar rather than
+  simulated partials.
+\end{itemize}
+
+\subsection{Hardening each route}
+Independent of the new acquisition, each route can be hardened:
+
+\begin{itemize}
+  \item \routeA{}: integrate the later-return (multipath) evidence through
+  cross-view consistency instead of discarding it at source; add an explicit
+  outlier-rejection pass in the TSDF; and expose per-vertex coverage as a
+  standard output (already prototyped in the ray-TSDF variant).
+  \item \routeB{}: evaluate against held-out \emph{real} partials with
+  F-score; replace the fixed 4096-point fine output with a
+  density-adaptive decoder (e.g.\ FoldingNet-style
+  \citep{yang2018folding} or a transformer-based completion
+  \citep{xie2020pointr}); and train a multi-category model that reports
+  category uncertainty.
+\end{itemize}
+
+\subsection{Chaining the routes}
+Finally, the mesh-conditioned training result suggests a promising hybrid:
+use \routeA{} to build a library of measured meshes per category, use those
+meshes (not procedural models) to train \routeB{}, and use \routeB{}'s
+completions as \emph{priors} inside a revised \routeA{} (e.g.\ as soft
+regularisers in the TSDF). This would give the geometric route the
+completeness it lacks and the learned route the sensor-grounded prior it
+needs --- the most productive direction this dissertation can point towards.
+
+\section{Closing remark}
+\label{sec:conc_closing}
+
+Underwater sonar is a hard sensor: its point clouds are partial, noisy and
+unevenly sampled, and the \suop{} dataset adds the further difficulty of
+unlogged object pose. This dissertation shows that two complementary routes
+can nevertheless convert such returns into useful 3D representations --- one
+that faithfully fuses what was measured when several views exist, and one that
+inferentially completes what was not observed when only a single view exists.
+The two routes are not competitors; they are the two halves of a complete
+answer, and the next acquisition campaign with logged poses and external
+reference will let both halves be measured against the truth they ultimately
+serve.

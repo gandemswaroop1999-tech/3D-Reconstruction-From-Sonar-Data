@@ -1,0 +1,166 @@
+% =====================================================================
+% Chapter 9 — Discussion
+% =====================================================================
+\chapter{Discussion}
+\label{ch:discussion}
+
+This chapter interprets the results of both routes, discusses the coverage of
+evidence across the five object categories (\secref{sec:disc_coverage}), the
+threats to validity (\secref{sec:disc_threats}), and the implications of the
+project's central claim --- that the two routes answer different questions and
+must be judged accordingly (\secref{sec:disc_implications}).
+
+\section{What the results mean together}
+\label{sec:disc_together}
+
+Taken together, the results of \secref{ch:resultsA} and \secref{ch:resultsB}
+support the dissertation's thesis: the two routes are complementary answers
+that succeed precisely where the other route's assumption fails.
+
+\routeA{} demonstrates that \emph{when overlapping views exist}, sonar
+partials can be aligned into a self-consistent measured model: 24/24 views per
+object were connected by pose-graph optimisation, median measured-to-surface
+residuals of $2.9$--$5.0\mm$ were achieved by the variants, and the
+Poisson/BPA pair provides an honest map of where the evidence is thin. The
+price is completeness: unobserved regions are empty or explicitly trimmed, and
+the model is only as good as the registration.
+
+\routeB{} demonstrates that \emph{when only one view exists}, a learned prior
+can still produce a complete object representation: the PCN converged on all
+runs (final training CD $1.1\times10^{-3}$--$2.3\times10^{-3}$), the epoch
+sheets show category-shaped completions, and a real chair partial was
+completed at the correct scale. The price is fidelity: the inferred geometry is
+a hypothesis from the training distribution, not a measurement.
+
+The interesting result is the \emph{mesh-conditioned dummy}: training \routeB{}
+on \routeA{} meshes transferred the measured geometry into the learned prior.
+This is the strongest evidence that the routes are partners rather than rivals
+--- the geometric route's best output becomes the learned route's training
+ground, closing a loop between measurement and inference.
+
+\section{Coverage across categories}
+\label{sec:disc_coverage}
+
+Evidence is not uniform across the five categories, and the dissertation is
+explicit about that (\tabref{tab:coverage}).
+
+\begin{table}[H]
+  \centering
+  \small
+  \begin{adjustbox}{max width=\textwidth}
+  \begin{tabular}{@{}p{1.6cm}p{6.3cm}p{6.3cm}@{}}
+    \toprule
+    Object & \routeA{} (geometric fusion) & \routeB{} (PCN completion) \\
+    \midrule
+    Chair & Rich: segments, fused cloud, Poisson + BPA, turntable, view-aware
+    and ray-TSDF variants, hybrid & Checkpoint (150~ep) + real-partial
+    inference shown \\
+    Tyre & Rich: segments, reconstruction, turntable, view-aware and ray-TSDF
+    variants, hybrid & No dedicated PCN result in this workspace \\
+    Dummy & Good: segments, mesh comparison, turntable & Rich: mesh-conditioned
+    training, epochs 1--10, comparisons \\
+    Drum & Numerically complete: fused cloud and meshes; no dedicated render &
+    Rich: epochs 1--10, contact sheet, comparisons \\
+    Net & Numerically complete: fused cloud and meshes; no dedicated render &
+    No checkpoint or completion image \\
+    \bottomrule
+  \end{tabular}
+  \end{adjustbox}
+  \caption{Result coverage across categories. The pipelines completed
+  numerically for all five objects; rendered evidence is richest for
+  chair/tyre/dummy. The table is a transparency statement, not a quality
+  ranking.}
+  \label{tab:coverage}
+\end{table}
+
+Two points follow. First, \emph{numerical completion} (files produced, graphs
+connected, losses decreased) and \emph{validated quality} (independent
+reference, external ground truth) are different things; this dissertation has
+much more of the former than the latter, as \suop{} allows. Second, the
+category coverage asymmetry is a consequence of where the segmentation is
+reliable: the chair and tyre produce compact, scale-consistent clusters,
+whereas the net's mesh-like structure and the drum's large planar barrel make
+segmentation harder or the renders less informative. Future work should fill
+the drum/net evidence gaps deliberately.
+
+\section{Threats to validity}
+\label{sec:disc_threats}
+
+\subsection{Internal validity}
+The main internal threats concern the correctness of the pipelines themselves:
+
+\begin{enumerate}
+  \item \textbf{Registration correctness.} FPFH can confuse repeated parts
+  (chair legs, tyre tread), and RANSAC can accept a symmetric but wrong
+  alignment. The pipeline mitigates this with the fitness $\geq 0.25$ edge
+  gate, MST initialisation, loop closures and edge pruning, but it cannot
+  prove correctness without ground-truth poses. The graph-connectivity and
+  fitness statistics show \emph{consistency}, not \emph{correctness}.
+  \item \textbf{Segmentation leakage.} If the object segment contains seabed
+  or rig points, registration fits them too. The elevation gating and
+  scale-consistent clustering in \secref{ch:dataset} reduce this, but residual
+  contamination is likely for the sparse 10~m cases (which were excluded from
+  fusion precisely for this reason).
+  \item \textbf{Evaluation metric choice.} Chamfer distance rewards uniform
+  coverage and can hide local error; counting mesh vertices rewards pipeline
+  completion, not quality. Both metrics are used here with their limitations
+  stated explicitly rather than presented as accuracy.
+\end{enumerate}
+
+\subsection{External validity}
+The largest external threat is that \suop{} provides \emph{no external
+ground truth} for geometry: no CAD models, no logged object poses, and no
+independent scan of the physical objects. Consequences:
+
+\begin{enumerate}
+  \item \routeA{}'s ``residual'' figures are self-consistency measures. A
+  surface could sit perfectly on noisy returns and still be wrong about the
+  real object (e.g.\ a consistently biased sound speed shifts all ranges).
+  \item \routeB{}'s training references are synthetic (procedural or
+  \routeA{}-derived). The learned prior is therefore a prior over
+  \emph{our models of the objects}, not over the real objects. Completeness of
+  the inference cannot be validated on the real data.
+  \item The object was moved by hand between \suop{} cases; any motion blur or
+  non-rigid deformation during acquisition becomes a bias that neither route
+  can model.
+\end{enumerate}
+
+\subsection{Reliability and reproducibility}
+All experiments used pinned open-source versions (Open3D 0.19, PyTorch, NumPy,
+scikit-learn; see Appendix~\ref{app:environment}) and were run from
+reproducible batch scripts with logged output. The datasets
+(\texttt{dataset\_*.npz}) are deterministic given the seed, and the
+registration and meshing manifests are committed as JSON in the project, so
+every table in this dissertation can be reproduced from the scripts and
+inputs. The main reliability caveat is compute: the pairwise registration cost
+($\sim$15--18 minutes per object) and the 150-epoch chair run ($\sim$4.1~h)
+limit how many configurations could be explored.
+
+\section{Implications for practice}
+\label{sec:disc_implications}
+
+Three practical recommendations follow from the results:
+
+\begin{enumerate}
+  \item \textbf{Choose the route by data availability, not fashion.} For
+  inspection-grade geometry where a measured answer is required, invest in
+  multi-view acquisitions and use \routeA{}. For single-pass deployments where
+  a complete model is needed, train a category-specific \routeB{} model.
+  \item \textbf{Report uncertainty honestly.} The Poisson/BPA divergence map
+  (\routeA{}) and the training-distribution caveat (\routeB{}) should travel
+  with the results; an unqualified mesh or completion overstates certainty.
+  \item \textbf{Link the routes.} The mesh-conditioned training result shows
+  that the geometric route's outputs can bootstrap the learned route's prior.
+  This hybridisation is a more productive research direction than treating the
+  two routes as competitors.
+\end{enumerate}
+
+\section{Summary}
+\label{sec:disc_summary}
+
+The results are consistent with the dissertation's central claim: \routeA{}
+produces measured, self-consistent but partial geometry when views exist;
+\routeB{} produces complete, prior-informed but unverified geometry when only
+one view exists; and the two can be chained. The principal limitation --- the
+absence of external geometric ground truth in \suop{} --- motivates the
+concluding chapter's proposed experiment.
